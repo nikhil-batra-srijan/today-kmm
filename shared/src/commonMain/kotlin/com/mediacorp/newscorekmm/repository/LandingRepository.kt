@@ -8,8 +8,5 @@ class LandingRepository internal constructor(val landingService: LandingService)
 
 
     companion object {
-        fun initRepo(baseUrl: String) {
-            LandingRepository(LandingService(baseUrl))
-        }
     }
 }

@@ -4,6 +4,6 @@ import com.mediacorp.newscorekmm.network.LandingService
 import com.mediacorp.newscorekmm.repository.LandingRepository
 
 
-fun LandingRepository.Companion.create(baseUrl: String) = LandingRepository(
+fun LandingRepository.Companion.init(baseUrl: String) = LandingRepository(
     LandingService(baseUrl)
 )

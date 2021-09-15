@@ -6,6 +6,7 @@ plugins {
     id("com.android.library")
 }
 
+
 version = "1.0"
 
 kotlin {
@@ -22,11 +23,9 @@ kotlin {
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "13.0"
-        framework {
-            baseName = "shared"
-        }
-        podfile = project.file("../iOSApp/Podfile")
+      /*  ios.deploymentTarget = "13.0"
+        frameworkName = "shared"
+        podfile = project.file("../iOSApp/Podfile")*/
     }
 
     sourceSets {
@@ -81,7 +80,7 @@ android {
 
     defaultConfig {
         minSdk = Dependencies.minSdk
-        targetSdk =  Dependencies.targetSdk
+        targetSdk = Dependencies.targetSdk
     }
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }
