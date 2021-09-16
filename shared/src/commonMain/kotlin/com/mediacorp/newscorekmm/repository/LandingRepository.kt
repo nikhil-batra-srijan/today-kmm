@@ -9,11 +9,12 @@ class LandingRepository internal constructor(val landingService: LandingService)
     }
 
 
-    companion object
+    companion object {
+        data class SampleOne(val abcc: String = " Hello Interface One") : Sample
+        data class SampleTwo(val abcc: String = " Hello Interface Two") : Sample
+    }
 }
 
 
 interface Sample {}
 
-data class SampleOne(val abcc: String = " Hello Interface One") : Sample
-data class SampleTwo(val abcc: String = " Hello Interface Two") : Sample
