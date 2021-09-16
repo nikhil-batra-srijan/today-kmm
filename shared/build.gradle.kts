@@ -52,13 +52,13 @@ kotlin {
                         "spec.pod_target_xcconfig = {",
                         """
           spec.pod_target_xcconfig = {
-            'KOTLIN_CONFIGURATION[config=development_release]' => 'Release',
-            'KOTLIN_CONFIGURATION[config=development_debug]' => 'Debug',
-            'KOTLIN_CONFIGURATION[config=staging_release]' => 'Release',
-            'KOTLIN_CONFIGURATION[config=staging_debug]' => 'Debug',
-            'KOTLIN_CONFIGURATION[config=production_release]' => 'Release',
-            'KOTLIN_CONFIGURATION[config=production_debug]' => 'Debug',
-            'KOTLIN_CONFIGURATION[config=AppStore]' => 'Release',
+            'KOTLIN_CONFIGURATION[config=development_release]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE}',
+            'KOTLIN_CONFIGURATION[config=development_debug]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG}',
+            'KOTLIN_CONFIGURATION[config=staging_release]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE}',
+            'KOTLIN_CONFIGURATION[config=staging_debug]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG}',
+            'KOTLIN_CONFIGURATION[config=production_release]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE}',
+            'KOTLIN_CONFIGURATION[config=production_debug]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG}',
+            'KOTLIN_CONFIGURATION[config=AppStore]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE}',
         """.trimIndent()
                     )
                     .replace("\$CONFIGURATION", "\$KOTLIN_CONFIGURATION")

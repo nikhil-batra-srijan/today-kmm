@@ -16,13 +16,13 @@ Pod::Spec.new do |spec|
                 
 
     spec.pod_target_xcconfig = {
-  'KOTLIN_CONFIGURATION[config=development_release]' => 'Release',
-  'KOTLIN_CONFIGURATION[config=development_debug]' => 'Debug',
-  'KOTLIN_CONFIGURATION[config=staging_release]' => 'Release',
-  'KOTLIN_CONFIGURATION[config=staging_debug]' => 'Debug',
-  'KOTLIN_CONFIGURATION[config=production_release]' => 'Release',
-  'KOTLIN_CONFIGURATION[config=production_debug]' => 'Debug',
-  'KOTLIN_CONFIGURATION[config=AppStore]' => 'Release',
+  'KOTLIN_CONFIGURATION[config=development_release]' => 'RELEASE',
+  'KOTLIN_CONFIGURATION[config=development_debug]' => 'DEBUG',
+  'KOTLIN_CONFIGURATION[config=staging_release]' => 'RELEASE',
+  'KOTLIN_CONFIGURATION[config=staging_debug]' => 'DEBUG',
+  'KOTLIN_CONFIGURATION[config=production_release]' => 'RELEASE',
+  'KOTLIN_CONFIGURATION[config=production_debug]' => 'DEBUG',
+  'KOTLIN_CONFIGURATION[config=AppStore]' => 'RELEASE',
         'KOTLIN_PROJECT_PATH' => ':shared',
         'PRODUCT_MODULE_NAME' => 'shared',
     }
