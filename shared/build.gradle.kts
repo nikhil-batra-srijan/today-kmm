@@ -29,7 +29,7 @@ kotlin {
 //        frameworkName = "shared"
 //        podfile = project.file("../iOSApp/Podfile")
 
-       /* xcodeConfigurationToNativeBuildType["development_debug"] =
+        /*xcodeConfigurationToNativeBuildType["development_debug"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["development_release"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
@@ -43,16 +43,18 @@ kotlin {
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
         xcodeConfigurationToNativeBuildType["AppStore"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE*/
-    }
-    val podspec by tasks.existing(org.jetbrains.kotlin.gradle.tasks.PodspecTask::class) {
-        doLast {
-            val outputFile = outputs.files.singleFile
-            val text = outputFile.readText()
-            val newText = text
-                // Workaround: https://youtrack.jetbrains.com/issue/KT-42023
-                .replace("spec.pod_target_xcconfig = {",
-                    """
+        val podspec by tasks.existing(org.jetbrains.kotlin.gradle.tasks.PodspecTask::class) {
+            doLast {
+                val outputFile = outputs.files.singleFile
+                val text = outputFile.readText()
+                val newText = text
+                    // Workaround: https://youtrack.jetbrains.com/issue/KT-42023
+                    .replace(
+                        "spec.pod_target_xcconfig = {",
+                        """
           spec.pod_target_xcconfig = {
+            'KOTLIN_PROJECT_PATH' => ':shared',
+            'PRODUCT_MODULE_NAME' => 'shared',
             'KOTLIN_CONFIGURATION[config=development_release]' => 'Release',
             'KOTLIN_CONFIGURATION[config=development_debug]' => 'Debug',
             'KOTLIN_CONFIGURATION[config=staging_release]' => 'Release',
@@ -61,9 +63,10 @@ kotlin {
             'KOTLIN_CONFIGURATION[config=production_debug]' => 'Debug',
             'KOTLIN_CONFIGURATION[config=AppStore]' => 'Release',
         """.trimIndent()
-                )
-                .replace("\$CONFIGURATION", "\$KOTLIN_CONFIGURATION")
-            outputFile.writeText(newText)
+                    )
+                    .replace("\$CONFIGURATION", "\$KOTLIN_CONFIGURATION")
+                outputFile.writeText(newText)
+            }
         }
     }
 
