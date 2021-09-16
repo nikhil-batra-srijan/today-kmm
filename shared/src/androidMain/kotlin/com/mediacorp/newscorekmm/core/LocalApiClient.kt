@@ -9,7 +9,7 @@ import io.ktor.client.features.logging.*
 import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 
-actual class LocalApiClient {
+actual object LocalApiClient {
    actual val client = HttpClient(OkHttp) {
       engine {
          config {

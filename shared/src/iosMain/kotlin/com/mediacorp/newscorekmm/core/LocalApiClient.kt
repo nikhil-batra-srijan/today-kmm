@@ -5,7 +5,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.ios.*
 import io.ktor.client.features.logging.*
 
-actual class LocalApiClient {
+actual object LocalApiClient {
     actual val client = HttpClient(Ios) {
         engine {
             configureRequest {

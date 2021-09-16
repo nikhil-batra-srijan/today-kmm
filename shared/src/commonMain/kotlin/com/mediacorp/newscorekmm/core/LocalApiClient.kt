@@ -2,6 +2,6 @@ package com.mediacorp.newscorekmm.core
 
 import io.ktor.client.*
 
-expect class LocalApiClient {
+expect object LocalApiClient {
     val client: HttpClient
 }

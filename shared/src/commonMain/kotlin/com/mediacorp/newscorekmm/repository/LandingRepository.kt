@@ -4,9 +4,16 @@ import com.mediacorp.newscorekmm.network.LandingService
 
 class LandingRepository internal constructor(val landingService: LandingService) {
 
-    fun getSomeString() = "Some string"
-
-
-    companion object {
+    fun getSomeString(): List<Sample> {
+        return listOf(SampleOne(), SampleTwo())
     }
+
+
+    companion object
 }
+
+
+interface Sample {}
+
+data class SampleOne(val abcc: String = " Hello Interface One") : Sample
+data class SampleTwo(val abcc: String = " Hello Interface Two") : Sample
