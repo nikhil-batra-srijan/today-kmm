@@ -16,13 +16,6 @@ Pod::Spec.new do |spec|
                 
 
     spec.pod_target_xcconfig = {
-  'KOTLIN_CONFIGURATION[config=development_release]' => 'RELEASE',
-  'KOTLIN_CONFIGURATION[config=development_debug]' => 'DEBUG',
-  'KOTLIN_CONFIGURATION[config=staging_release]' => 'RELEASE',
-  'KOTLIN_CONFIGURATION[config=staging_debug]' => 'DEBUG',
-  'KOTLIN_CONFIGURATION[config=production_release]' => 'RELEASE',
-  'KOTLIN_CONFIGURATION[config=production_debug]' => 'DEBUG',
-  'KOTLIN_CONFIGURATION[config=AppStore]' => 'RELEASE',
         'KOTLIN_PROJECT_PATH' => ':shared',
         'PRODUCT_MODULE_NAME' => 'shared',
     }
@@ -42,7 +35,7 @@ Pod::Spec.new do |spec|
                 "$REPO_ROOT/../gradlew" -p "$REPO_ROOT" $KOTLIN_PROJECT_PATH:syncFramework \
                     -Pkotlin.native.cocoapods.platform=$PLATFORM_NAME \
                     -Pkotlin.native.cocoapods.archs="$ARCHS" \
-                    -Pkotlin.native.cocoapods.configuration=$KOTLIN_CONFIGURATION \
+                    -Pkotlin.native.cocoapods.configuration=$CONFIGURATION \
                     -Pkotlin.native.cocoapods.cflags="$OTHER_CFLAGS" \
                     -Pkotlin.native.cocoapods.paths.headers="$HEADER_SEARCH_PATHS" \
                     -Pkotlin.native.cocoapods.paths.frameworks="$FRAMEWORK_SEARCH_PATHS"

@@ -28,7 +28,7 @@ kotlin {
 //        frameworkName = "shared"
 //        podfile = project.file("../iOSApp/Podfile")
 
-        /*xcodeConfigurationToNativeBuildType["development_debug"] =
+        xcodeConfigurationToNativeBuildType["development_debug"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["development_release"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
@@ -41,10 +41,10 @@ kotlin {
         xcodeConfigurationToNativeBuildType["production_release"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
         xcodeConfigurationToNativeBuildType["AppStore"] =
-            org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE*/
+            org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
 
     }
-    val podspec by tasks.existing(org.jetbrains.kotlin.gradle.tasks.PodspecTask::class) {
+ /*   val podspec by tasks.existing(org.jetbrains.kotlin.gradle.tasks.PodspecTask::class) {
         doLast {
             val outputFile = outputs.files.singleFile
             val text = outputFile.readText()
@@ -66,7 +66,7 @@ kotlin {
                 .replace("\$CONFIGURATION", "\$KOTLIN_CONFIGURATION")
             outputFile.writeText(newText)
         }
-    }
+    }*/
 
 
 
