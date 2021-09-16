@@ -12,7 +12,7 @@ version = "1.0"
 kotlin {
     android()
 
- /*   val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
+    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
 //        System.getenv("NATIVE_ARCH")?.startsWith("arm") == true -> ::iosSimulatorArm64
         else -> ::iosX64
@@ -42,7 +42,7 @@ kotlin {
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
         xcodeConfigurationToNativeBuildType["AppStore"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
-    }*/
+    }
 
 
 
