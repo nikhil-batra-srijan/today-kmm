@@ -42,15 +42,17 @@ kotlin {
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
         xcodeConfigurationToNativeBuildType["AppStore"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE*/
-        val podspec by tasks.existing(org.jetbrains.kotlin.gradle.tasks.PodspecTask::class) {
-            doLast {
-                val outputFile = outputs.files.singleFile
-                val text = outputFile.readText()
-                val newText = text
-                    // Workaround: https://youtrack.jetbrains.com/issue/KT-42023
-                    .replace(
-                        "spec.pod_target_xcconfig = {",
-                        """
+
+    }
+    val podspec by tasks.existing(org.jetbrains.kotlin.gradle.tasks.PodspecTask::class) {
+        doLast {
+            val outputFile = outputs.files.singleFile
+            val text = outputFile.readText()
+            val newText = text
+                // Workaround: https://youtrack.jetbrains.com/issue/KT-42023
+                .replace(
+                    "spec.pod_target_xcconfig = {",
+                    """
           spec.pod_target_xcconfig = {
             'KOTLIN_CONFIGURATION[config=development_release]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE}',
             'KOTLIN_CONFIGURATION[config=development_debug]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG}',
@@ -60,10 +62,9 @@ kotlin {
             'KOTLIN_CONFIGURATION[config=production_debug]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG}',
             'KOTLIN_CONFIGURATION[config=AppStore]' => '${org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE}',
         """.trimIndent()
-                    )
-                    .replace("\$CONFIGURATION", "\$KOTLIN_CONFIGURATION")
-                outputFile.writeText(newText)
-            }
+                )
+                .replace("\$CONFIGURATION", "\$KOTLIN_CONFIGURATION")
+            outputFile.writeText(newText)
         }
     }
 
