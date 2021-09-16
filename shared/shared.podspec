@@ -1,21 +1,28 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'shared'
     spec.version                  = '1.0'
-    spec.homepage                 = ''
+    spec.homepage                 = 'Link to the Shared Module homepage'
     spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = ''
+    spec.summary                  = 'Some description for the Shared Module'
 
     spec.vendored_frameworks      = "build/cocoapods/framework/shared.framework"
     spec.libraries                = "c++"
     spec.module_name              = "#{spec.name}_umbrella"
 
-                
+    spec.ios.deployment_target = '13.0'
 
                 
 
     spec.pod_target_xcconfig = {
+  'KOTLIN_CONFIGURATION[config=development_release]' => 'Release',
+  'KOTLIN_CONFIGURATION[config=development_debug]' => 'Debug',
+  'KOTLIN_CONFIGURATION[config=staging_release]' => 'Release',
+  'KOTLIN_CONFIGURATION[config=staging_debug]' => 'Debug',
+  'KOTLIN_CONFIGURATION[config=production_release]' => 'Release',
+  'KOTLIN_CONFIGURATION[config=production_debug]' => 'Debug',
+  'KOTLIN_CONFIGURATION[config=AppStore]' => 'Release',
         'KOTLIN_PROJECT_PATH' => ':shared',
         'PRODUCT_MODULE_NAME' => 'shared',
     }
@@ -32,10 +39,10 @@ Pod::Spec.new do |spec|
                 fi
                 set -ev
                 REPO_ROOT="$PODS_TARGET_SRCROOT"
-                "$REPO_ROOT/../../news-core-android/gradlew" -p "$REPO_ROOT" $KOTLIN_PROJECT_PATH:syncFramework \
+                "$REPO_ROOT/../gradlew" -p "$REPO_ROOT" $KOTLIN_PROJECT_PATH:syncFramework \
                     -Pkotlin.native.cocoapods.platform=$PLATFORM_NAME \
                     -Pkotlin.native.cocoapods.archs="$ARCHS" \
-                    -Pkotlin.native.cocoapods.configuration=$CONFIGURATION \
+                    -Pkotlin.native.cocoapods.configuration=$KOTLIN_CONFIGURATION \
                     -Pkotlin.native.cocoapods.cflags="$OTHER_CFLAGS" \
                     -Pkotlin.native.cocoapods.paths.headers="$HEADER_SEARCH_PATHS" \
                     -Pkotlin.native.cocoapods.paths.frameworks="$FRAMEWORK_SEARCH_PATHS"

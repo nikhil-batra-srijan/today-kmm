@@ -52,8 +52,6 @@ kotlin {
                         "spec.pod_target_xcconfig = {",
                         """
           spec.pod_target_xcconfig = {
-            'KOTLIN_PROJECT_PATH' => ':shared',
-            'PRODUCT_MODULE_NAME' => 'shared',
             'KOTLIN_CONFIGURATION[config=development_release]' => 'Release',
             'KOTLIN_CONFIGURATION[config=development_debug]' => 'Debug',
             'KOTLIN_CONFIGURATION[config=staging_release]' => 'Release',
