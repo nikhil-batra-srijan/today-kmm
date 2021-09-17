@@ -4,16 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LandingResponse(
-    @SerialName("result")
-    val result: LandingResultResponse?
+data class LayoutResponse(
+    @SerialName("layout_section")
+    val layoutSection: LayoutSectionResponse?
 )
-
-
-
-
-
-
-
-
-
