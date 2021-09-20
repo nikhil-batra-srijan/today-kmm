@@ -1,4 +1,4 @@
-package com.mediacorp.newscorekmm.domain.dto.landing.component.dl_middle_nine_story_five_pics
+package com.mediacorp.newscorekmm.domain.dto.landing.component.dl_middle_nine_stories_five_pics
 
 import com.mediacorp.newscorekmm.domain.dto.landing.component.common.CtaData
 import com.mediacorp.newscorekmm.domain.dto.landing.component.LandingPageComponent

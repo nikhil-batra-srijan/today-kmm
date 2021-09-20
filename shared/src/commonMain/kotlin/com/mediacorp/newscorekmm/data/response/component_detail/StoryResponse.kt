@@ -1,5 +1,7 @@
 package com.mediacorp.newscorekmm.data.response.component_detail
 
+import com.mediacorp.newscorekmm.data.response.landing.BaseLabelDisplay
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -51,4 +53,28 @@ data class StoryResponse(
     val uuid: String?,
     @SerialName("video")
     val video: VideoResponse?
+    //TODO Add byline and source implementation for image
+    /*,
+    @SerialName("image_byline_and_source")
+    @Polymorphic
+    val imageByLineAndSource: BaseImageByLineAndSource*/
+)
+
+abstract class BaseImageByLineAndSource
+
+@Serializable
+data class ImageByLineAndSourceObject(val imageByLineAndSource: ImageBylineAndSource) :
+    BaseImageByLineAndSource()
+
+@Serializable
+data class ImageByLineAndSourceList(val imageByLineAndSource: List<ImageBylineAndSource>) :
+    BaseImageByLineAndSource()
+
+
+@Serializable
+data class ImageBylineAndSource(
+    @SerialName("byline")
+    val byline: String?,
+    @SerialName("source")
+    val source: String?,
 )

@@ -2,12 +2,16 @@ package com.mediacorp.newscorekmm.repository
 
 import com.mediacorp.newscorekmm.data.response.component_detail.ComponentDetailResponse
 import com.mediacorp.newscorekmm.data.response.component_detail.StoryResponse
+import com.mediacorp.newscorekmm.data.response.component_detail.VideoResponse
 import com.mediacorp.newscorekmm.data.response.landing.BaseLabelDisplay
 import com.mediacorp.newscorekmm.data.response.landing.LabelDisplayInt
 import com.mediacorp.newscorekmm.data.response.landing.LabelDisplayString
 import com.mediacorp.newscorekmm.domain.dto.landing.component.*
 import com.mediacorp.newscorekmm.domain.dto.landing.component.common.*
-import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_middle_nine_story_five_pics.MiddleNineStoriesFivePicsComponent
+import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_large_tile_two_stories_two_pics.LargeTilesTwoStoriesTwoPicsComponent
+import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_listing_four_stories_four_pics.ListingFourStoriesFourPicsComponent
+import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_middle_nine_stories_five_pics.MiddleNineStoriesFivePicsComponent
+import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_seven_stoies_five_pics.SevenStoriesFivePicsComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.landing_page.*
 import com.mediacorp.newscorekmm.network.LandingService
 import kotlinx.coroutines.flow.Flow
@@ -230,22 +234,63 @@ class LandingRepository internal constructor(private val landingService: Landing
                     interpretStoryList(
                         compResult.storyResponse,
                         detectViewModeTypeFromViewMode(viewMode)
-                    )
+                    ),
+                    false
 
                 )
 
             }
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.left7s5p -> {
-
+                SevenStoriesFivePicsComponent(
+                    compResult.uuid,
+                    interpretTitle(labelDisplay, compResult.title),
+                    interpretCta(
+                        compResult.viewMoreTitle,
+                        compResult.viewMoreUrlFieldId,
+                        compResult.viewMoreUrlFieldType,
+                        compResult.viewMoreUrl
+                    ),
+                    interpretStoryList(
+                        compResult.storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ),
+                    false
+                )
             }
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.listing4s4p -> {
-
+                ListingFourStoriesFourPicsComponent(
+                    compResult.uuid,
+                    interpretTitle(labelDisplay, compResult.title),
+                    interpretCta(
+                        compResult.viewMoreTitle,
+                        compResult.viewMoreUrlFieldId,
+                        compResult.viewMoreUrlFieldType,
+                        compResult.viewMoreUrl
+                    ),
+                    interpretStoryList(
+                        compResult.storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ),
+                    false
+                )
             }
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.largeTiles2s2p -> {
-
+                LargeTilesTwoStoriesTwoPicsComponent( compResult.uuid,
+                    interpretTitle(labelDisplay, compResult.title),
+                    interpretCta(
+                        compResult.viewMoreTitle,
+                        compResult.viewMoreUrlFieldId,
+                        compResult.viewMoreUrlFieldType,
+                        compResult.viewMoreUrl
+                    ),
+                    interpretStoryList(
+                        compResult.storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ),
+                    false)
             }
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.aLeft5s5p -> {
@@ -381,7 +426,7 @@ class LandingRepository internal constructor(private val landingService: Landing
         if (storyResponse.isNullOrEmpty()) {
             return emptyList()
         }
-        when (viewModeType) {
+        return when (viewModeType) {
             ViewModeType.aLeft5s5p -> TODO()
             ViewModeType.aLeft5s5pAds -> TODO()
             ViewModeType.aMiddle8s6p -> TODO()
@@ -395,27 +440,271 @@ class LandingRepository internal constructor(private val landingService: Landing
             ViewModeType.featuredVideoLeft5s5p -> TODO()
             ViewModeType.full -> TODO()
             ViewModeType.infiniteScrollListingTdy -> TODO()
-            ViewModeType.largeTiles2s2p -> TODO()
-            ViewModeType.left7s5p -> TODO()
-            ViewModeType.listing4s4p -> TODO()
+            ViewModeType.largeTiles2s2p -> {
+                storyResponse.mapIndexed { index, item ->
+                    if (item.nid != null && item.uuid != null && item.absoluteUrl != null && item.title != null) {
+                        when (index) {
+                            in (0..storyResponse.size) -> {
+                                StoryItemWithLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemImage(
+                                        item.imageUrl
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            else -> ComponentDetailStoryItemError
+                        }
+                    } else {
+                        ComponentDetailStoryItemError
+                    }
+                }
+            }
+            ViewModeType.left7s5p -> {
+                storyResponse.mapIndexed { index, item ->
+                    if (item.nid != null && item.uuid != null && item.absoluteUrl != null && item.title != null) {
+                        when (index) {
+                            0 -> {
+                                FeaturedStoryItem(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemDescription(item.description),
+                                    interpretStoryItemImage(
+                                        item.imageUrl
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            in (1..4) -> {
+                                StoryItemWithLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemImage(
+                                        item.imageUrl
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            in (4..storyResponse.size) -> {
+                                StoryItemWithoutLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            else -> ComponentDetailStoryItemError
+                        }
+                    } else {
+                        ComponentDetailStoryItemError
+                    }
+                }
+            }
+            ViewModeType.listing4s4p -> {
+                storyResponse.mapIndexed { index, item ->
+                    if (item.nid != null && item.uuid != null && item.absoluteUrl != null && item.title != null) {
+                        when (index) {
+                            in (0..storyResponse.size) -> {
+                                StoryItemWithLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemImage(
+                                        item.imageUrl
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            else -> ComponentDetailStoryItemError
+                        }
+                    } else {
+                        ComponentDetailStoryItemError
+                    }
+                }
+            }
             ViewModeType.middle9s5p -> {
                 storyResponse.mapIndexed { index, item ->
-                    when (index) {
-                        0 -> {
-
+                    if (item.nid != null && item.uuid != null && item.absoluteUrl != null && item.title != null) {
+                        when (index) {
+                            0 -> {
+                                FeaturedStoryItem(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemDescription(item.description),
+                                    interpretStoryItemImage(
+                                        item.imageUrl
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            in (1..4) -> {
+                                StoryItemWithLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemImage(
+                                        item.imageUrl
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            in (4..storyResponse.size) -> {
+                                StoryItemWithoutLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            else -> ComponentDetailStoryItemError
                         }
-                        in (1..4) -> {
-
-                        }
-                        in (4..storyResponse.size) -> {
-
-                        }
+                    } else {
+                        ComponentDetailStoryItemError
                     }
                 }
             }
             ViewModeType.minuteFullWidth -> TODO()
             ViewModeType.numberedCarousel -> TODO()
             ViewModeType.defaultViewMode -> TODO()
+        }
+    }
+
+
+    private fun interpretStoryItemDescription(description: String?): StoryDescriptionData {
+        return if (description.isNullOrEmpty()) {
+            WithoutDescription
+        } else {
+            WithDescription(
+                description
+            )
+        }
+    }
+
+    private fun interpretStoryItemImage(
+        imageUrl: String?
+    ): ImageData {
+        //TODO write logic for image byline and source over image
+        return if (imageUrl.isNullOrEmpty()) {
+            WithoutImage
+        } else {
+            WithImage(imageUrl)
+        }
+    }
+
+    private fun interpretStoryByLineData(author: String?, mediaType: String?): ByLineData {
+        return if (author.isNullOrEmpty()) {
+            WithoutByLine
+        } else {
+            if (!mediaType.isNullOrEmpty() && mediaType == VIDEO_MEDIA_TYPE) {
+                WithByLineVideo(author)
+            } else {
+                WithByLineArticle(author)
+            }
+        }
+    }
+
+    private fun interpretTimeStampData(releaseDate: String?): TimestampData {
+
+        return NoTimeStamp
+    }
+
+    private fun interpretEmphasisLogic(
+        mediaType: String?,
+        video: VideoResponse?,
+        mediaCount: Int?
+    ): HeroMediaType {
+        return if (mediaType.isNullOrEmpty()) {
+            DefaultMediaType
+        } else {
+            when (mediaType) {
+                VIDEO_MEDIA_TYPE -> {
+                    if (video != null && !video.duration.isNullOrEmpty()) {
+                        WithVideo(video.duration)
+                    } else {
+                        DefaultMediaType
+                    }
+
+                }
+                GALLERY_MEDIA_TYPE -> {
+                    if (mediaCount != null && mediaCount > 1) {
+                        WithGalleryCount(mediaCount)
+                    } else {
+                        DefaultMediaType
+                    }
+                }
+                else -> {
+                    DefaultMediaType
+                }
+            }
         }
     }
 
@@ -497,6 +786,8 @@ class LandingRepository internal constructor(private val landingService: Landing
         const val LANDING_PAGE_CTA = "landing_page"
         const val ARTICLE_DETAIL_CTA = "article"
         const val VIDEO_DETAIL_CTA = "video"
+        const val VIDEO_MEDIA_TYPE = "video"
+        const val GALLERY_MEDIA_TYPE = "gallery"
     }
 }
 
