@@ -19,8 +19,6 @@ data class StoryResponse(
     val changedDate: String?,
     @SerialName("content_origin")
     val contentOrigin: String?,
-  /*  @SerialName("content_origin_id")
-    val contentOriginId: Any,*/
     @SerialName("date")
     val date: String?,
     @SerialName("description")
@@ -29,8 +27,6 @@ data class StoryResponse(
     val duration: String?,
     @SerialName("flag")
     val flag: String?,
-    /*@SerialName("image")
-    val image: ImageResponse?,*/
     @SerialName("image_url")
     val imageUrl: String?,
     @SerialName("liveblog_source")

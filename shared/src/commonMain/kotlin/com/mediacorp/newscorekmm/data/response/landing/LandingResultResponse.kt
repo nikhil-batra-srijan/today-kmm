@@ -14,7 +14,7 @@ data class LandingResultResponse(
     @SerialName("brief")
     val brief: String?,
     @SerialName("url")
-    val url: String,
+    val url: String?,
     @SerialName("image")
     val image: String?,
     @SerialName("image_mobile")

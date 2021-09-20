@@ -30,11 +30,11 @@ data class ComponentResponse(
     @SerialName("subscription_type")
     val subscriptionType: String?,
     @SerialName("type")
-    val type: String?,
+    val type: String,
     @SerialName("uuid")
-    val uuid: String?,
+    val uuid: String,
     @SerialName("view_mode")
-    val viewMode: String?,
+    val viewMode: String,
     @SerialName("view_more_title")
     val viewMoreTitle: String?,
     @SerialName("view_more_url")
