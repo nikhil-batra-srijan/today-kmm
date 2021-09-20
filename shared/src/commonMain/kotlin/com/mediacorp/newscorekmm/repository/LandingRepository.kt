@@ -8,6 +8,7 @@ import com.mediacorp.newscorekmm.data.response.landing.LabelDisplayInt
 import com.mediacorp.newscorekmm.data.response.landing.LabelDisplayString
 import com.mediacorp.newscorekmm.domain.dto.landing.component.*
 import com.mediacorp.newscorekmm.domain.dto.landing.component.common.*
+import com.mediacorp.newscorekmm.domain.dto.landing.component.default_subscription_component.*
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_carousel_journalists_full.CarouselJournalistsFullComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_carousel_without_numbers_full_width.CarouselWithoutNumbersFullWidthComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_default_listing.DefaultListingComponent
@@ -24,6 +25,8 @@ import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_middle_eight_st
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_middle_nine_stories_five_pics.MiddleNineStoriesFivePicsComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_minute_full_width.MinuteFullWidthComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_seven_stoies_five_pics.SevenStoriesFivePicsComponent
+import com.mediacorp.newscorekmm.domain.dto.landing.component.full_interactive.*
+import com.mediacorp.newscorekmm.domain.dto.landing.component.full_spotlight.SpotLightComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.landing_page.*
 import com.mediacorp.newscorekmm.network.LandingService
 import kotlinx.coroutines.flow.Flow
@@ -174,13 +177,9 @@ class LandingRepository internal constructor(private val landingService: Landing
             }
 
         } ?: emit(LandingPageError)
-
-
     }
 
-
-    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): Flow<LandingPageComponent> =
-        flow {
+    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): Flow<LandingPageComponent> = flow {
             landingService.getComponentDetails(lazyLoadComponent.uuid, lazyLoadComponent.viewMode)
                 ?.let { componentDetailResponse ->
                     componentDetailResponse.result?.let { componentDetailResultResponse ->
@@ -523,18 +522,55 @@ class LandingRepository internal constructor(private val landingService: Landing
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.spotlight
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.full -> {
-
+                if (!compResult.imageUrl.isNullOrBlank() && !compResult.viewMoreUrl.isNullOrBlank() && !compResult.viewMoreUrlFieldType.isNullOrBlank()) {
+                    SpotLightComponent(
+                        compResult.uuid,
+                        compResult.imageUrl,
+                        compResult.viewMoreUrl,
+                        compResult.viewMoreUrlFieldType
+                    )
+                } else {
+                    ComponentError
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.subscription
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.defaultViewMode -> {
-
+                if (!compResult.title.isNullOrBlank()
+                    && !compResult.body.isNullOrBlank()
+                    && !compResult.subDescription.isNullOrBlank()
+                    && !compResult.subscriptionType.isNullOrBlank()
+                ) {
+                    DefaultSubscriptionComponent(
+                        compResult.uuid,
+                        title = compResult.title,
+                        policyLabel = compResult.subDescription ?: "",
+                        image = interpretSubscriptionImage(compResult.imageUrl),
+                        body = compResult.body,
+                        placeHolder = interpretSubscriptionPlaceholder(compResult.placeholder),
+                        subscriptionType = compResult.subscriptionType
+                    )
+                } else {
+                    ComponentError
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.interactive
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.full -> {
-
+                if (!compResult.htmlString.isNullOrBlank() && !compResult.title.isNullOrBlank()) {
+                    InteractiveComponent(
+                        compResult.uuid,
+                        compResult.title,
+                        compResult.htmlString,
+                        interpretInteractiveInteractiveViewMoreTitle(compResult.viewMoreTitle),
+                        interpretInteractiveInteractiveViewMoreUrl(compResult.viewMoreUrl)
+                    )
+                } else {
+                    ComponentError
+                }
             }
+
+            //TODO write implementation for CIA widgets
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.numberedCarousel -> ComponentError
@@ -597,6 +633,39 @@ class LandingRepository internal constructor(private val landingService: Landing
             }
 
 
+        }
+    }
+
+    private fun interpretSubscriptionImage(imageUrl: String?): SubscriptionImageData {
+        return if (imageUrl.isNullOrBlank()) {
+            WithoutSubscriptionImage
+        } else {
+            WithSubscriptionImage(imageUrl)
+        }
+
+    }
+
+    private fun interpretSubscriptionPlaceholder(placeholder: String?): SubscriptionPlaceholder {
+        return if (placeholder.isNullOrBlank()) {
+            WithoutSubscriptionSubscriptionPlaceholder
+        } else {
+            WithSubscriptionPlaceholder(placeholder)
+        }
+    }
+
+    private fun interpretInteractiveInteractiveViewMoreTitle(viewMoreTitle: String?): InteractiveViewMoreTitle {
+        return if (viewMoreTitle.isNullOrBlank()) {
+            WithoutInteractiveViewMoreTitle
+        } else {
+            WithInteractiveViewMoreTitle(viewMoreTitle)
+        }
+    }
+
+    private fun interpretInteractiveInteractiveViewMoreUrl(url: String?): InteractiveViewMoreUrl {
+        return if (url.isNullOrBlank()) {
+            WithoutInteractiveViewMoreUrl
+        } else {
+            WithInteractiveViewMoreUrl(url)
         }
     }
 
@@ -1413,7 +1482,6 @@ class LandingRepository internal constructor(private val landingService: Landing
     }
 
     private fun interpretTimeStampData(releaseDate: String?): TimestampData {
-
         return NoTimeStamp
     }
 
