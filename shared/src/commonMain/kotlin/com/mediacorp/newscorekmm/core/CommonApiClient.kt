@@ -9,7 +9,10 @@ import io.ktor.client.features.logging.*
 object CommonApiClient {
     val httpClient = HttpClient() {
         install(JsonFeature) {
-            val json = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
+            val json = kotlinx.serialization.json.Json {
+                ignoreUnknownKeys = true
+                serializersModule = getSerializersModule()
+            }
             serializer = KotlinxSerializer(json)
         }
         install(Logging) {

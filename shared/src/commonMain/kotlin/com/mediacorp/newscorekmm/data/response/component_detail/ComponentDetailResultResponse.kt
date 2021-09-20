@@ -20,9 +20,9 @@ data class ComponentDetailResultResponse(
     @SerialName("title")
     val title: String?,
     @SerialName("type")
-    val type: String?,
+    val type: String,
     @SerialName("uuid")
-    val uuid: String?,
+    val uuid: String,
     @SerialName("view_more_title")
     val viewMoreTitle: String?,
     @SerialName("view_more_url")

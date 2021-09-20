@@ -1,5 +1,7 @@
 package com.mediacorp.newscorekmm.domain.dto.landing.landing_page
 
+import com.mediacorp.newscorekmm.domain.dto.landing.component.LandingPageComponent
+
 //Chief type
 interface LandingPageData
 

@@ -5,7 +5,7 @@ import com.mediacorp.newscorekmm.data.response.component_detail.ComponentDetailR
 import com.mediacorp.newscorekmm.data.response.landing.LandingResponse
 import io.ktor.client.request.*
 
-class LandingService(val baseUrl: String) {
+class LandingService(private val baseUrl: String) {
 
     suspend fun getLanding(landingPageId: String): LandingResponse? {
         return try {
