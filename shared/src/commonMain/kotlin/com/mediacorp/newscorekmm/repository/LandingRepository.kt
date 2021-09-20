@@ -27,12 +27,19 @@ import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_minute_full_wid
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_seven_stoies_five_pics.SevenStoriesFivePicsComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.component.full_interactive.*
 import com.mediacorp.newscorekmm.domain.dto.landing.component.full_spotlight.SpotLightComponent
+import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScrollComponentData
+import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScrollData
+import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScrollError
 import com.mediacorp.newscorekmm.domain.dto.landing.landing_page.*
+import com.mediacorp.newscorekmm.network.InfiniteScrollService
 import com.mediacorp.newscorekmm.network.LandingService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class LandingRepository internal constructor(private val landingService: LandingService) {
+class LandingRepository internal constructor(
+    private val landingService: LandingService,
+    private val infiniteScrollService: InfiniteScrollService
+) {
 
     private val landingPageStoryList = mutableListOf<StoryResponse>()
 
@@ -179,7 +186,8 @@ class LandingRepository internal constructor(private val landingService: Landing
         } ?: emit(LandingPageError)
     }
 
-    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): Flow<LandingPageComponent> = flow {
+    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): Flow<LandingPageComponent> =
+        flow {
             landingService.getComponentDetails(lazyLoadComponent.uuid, lazyLoadComponent.viewMode)
                 ?.let { componentDetailResponse ->
                     componentDetailResponse.result?.let { componentDetailResultResponse ->
@@ -220,6 +228,40 @@ class LandingRepository internal constructor(private val landingService: Landing
                 } ?: emit(ComponentError)
 
         }
+
+    fun fetchInfiniteScrollComponent(
+        uuid: String,
+        viewMode: String,
+        page: Int
+    ): Flow<InfiniteScrollData> = flow {
+        infiniteScrollService.getInfiniteScrollList(uuid, viewMode, page)?.let {
+            if (it.result == null) {
+                emit(InfiniteScrollError)
+            } else {
+                interpretStoryList(
+                    it.result,
+                    ViewModeType.infinitListing
+                ).let { infiniteStoryList ->
+                    if (infiniteStoryList.isEmpty()) {
+                        emit(InfiniteScrollError)
+                    } else {
+                        emit(
+                            InfiniteScrollComponentData(
+                                uuid,
+                                viewMode,
+                                page.plus(1),
+                                infiniteStoryList
+                            )
+                        )
+
+                    }
+                }
+
+            }
+
+        }
+            ?: emit(InfiniteScrollError)
+    }
 
     private fun getLandingPageComponent(
         componentResponse: ComponentDetailResponse,
@@ -1438,12 +1480,43 @@ class LandingRepository internal constructor(private val landingService: Landing
                     }
                 }
             }
+            ViewModeType.infinitListing -> {
+                storyResponse.mapIndexed { index, item ->
+                    if (!item.nid.isNullOrBlank() && !item.uuid.isNullOrBlank() && !item.absoluteUrl.isNullOrBlank() && !item.title.isNullOrBlank()) {
+                        when (index) {
+                            in (0..storyResponse.size) -> {
+                                StoryItemWithLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemImage(
+                                        item.imageUrl
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
+                            else -> ComponentDetailStoryItemError
+                        }
+                    } else {
+                        ComponentDetailStoryItemError
+                    }
+                }
+            }
             //CIA //TODO Add Implementation for CIA Widgets
             ViewModeType.numberedCarousel -> emptyList()
             ViewModeType.cLeft5s5p -> emptyList()
             ViewModeType.carousel -> emptyList()
             //Not for dynamic Listing
             ViewModeType.full -> emptyList()
+
         }
     }
 

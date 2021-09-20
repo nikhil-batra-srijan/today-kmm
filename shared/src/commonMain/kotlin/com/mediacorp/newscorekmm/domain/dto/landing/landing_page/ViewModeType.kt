@@ -20,6 +20,7 @@ sealed class ViewModeType {
     object featuredImageMiddle8s4p : ViewModeType()
     object infiniteScrollListingTdy : ViewModeType()
     object aLeft5s5pAds : ViewModeType()
+    object infinitListing:ViewModeType()
     object defaultViewMode : ViewModeType()
 }
 
