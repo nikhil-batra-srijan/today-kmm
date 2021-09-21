@@ -1555,7 +1555,11 @@ class LandingRepository internal constructor(
     }
 
     private fun interpretTimeStampData(releaseDate: String?): TimestampData {
-        return NoTimeStamp
+        return if (!releaseDate.isNullOrBlank()) {
+            WithTimeStamp(releaseDate)
+        } else {
+            NoTimeStamp
+        }
     }
 
     private fun interpretEmphasisLogic(
