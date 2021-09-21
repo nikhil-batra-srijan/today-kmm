@@ -3,9 +3,6 @@ package com.mediacorp.newscorekmm.repository
 import com.mediacorp.newscorekmm.data.response.component_detail.ComponentDetailResponse
 import com.mediacorp.newscorekmm.data.response.component_detail.StoryResponse
 import com.mediacorp.newscorekmm.data.response.component_detail.VideoResponse
-import com.mediacorp.newscorekmm.data.response.landing.BaseLabelDisplay
-import com.mediacorp.newscorekmm.data.response.landing.LabelDisplayInt
-import com.mediacorp.newscorekmm.data.response.landing.LabelDisplayString
 import com.mediacorp.newscorekmm.domain.dto.landing.component.*
 import com.mediacorp.newscorekmm.domain.dto.landing.component.common.*
 import com.mediacorp.newscorekmm.domain.dto.landing.component.default_subscription_component.*
@@ -34,7 +31,6 @@ import com.mediacorp.newscorekmm.domain.dto.landing.landing_page.*
 import com.mediacorp.newscorekmm.ext.CFlow
 import com.mediacorp.newscorekmm.network.InfiniteScrollService
 import com.mediacorp.newscorekmm.network.LandingService
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class LandingRepository internal constructor(
@@ -47,10 +43,6 @@ class LandingRepository internal constructor(
     fun getSomeInterfaceValue(): List<SomeInterface> = listOf(
         ValueOne("Hello"), ValueTwo("World")
     )
-
-    interface SomeInterface
-    data class ValueOne(val value: String) : SomeInterface
-    data class ValueTwo(val value: String) : SomeInterface
 
     fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> = CFlow(flow {
         landingPageStoryList.clear()
