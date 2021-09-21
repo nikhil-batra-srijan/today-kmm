@@ -104,7 +104,7 @@ class LandingRepository internal constructor(
                                                                     LazyLoadComponent(
                                                                         it.uuid,
                                                                         it.viewMode,
-                                                                        getLabelDisplayFlag(it.labelDisplay)
+                                                                        getLabelDisplayFlag(/*it.labelDisplay*/)
                                                                     )
                                                                 }.drop(1)
                                                             )
@@ -122,14 +122,14 @@ class LandingRepository internal constructor(
                                                                             ),
                                                                             landingPageData[0].viewMode,
                                                                             getLabelDisplayFlag(
-                                                                                landingPageData[0].labelDisplay
+                                                                               /* landingPageData[0].labelDisplay*/
                                                                             )
                                                                         )
                                                                     ), landingPageData.map {
                                                                         LazyLoadComponent(
                                                                             it.uuid,
                                                                             it.viewMode,
-                                                                            getLabelDisplayFlag(it.labelDisplay)
+                                                                            getLabelDisplayFlag(/*it.labelDisplay*/)
                                                                         )
                                                                     }.drop(1)
                                                                 )
@@ -146,14 +146,14 @@ class LandingRepository internal constructor(
                                                                     componentDetailResponse,
                                                                     landingPageData[0].viewMode,
                                                                     getLabelDisplayFlag(
-                                                                        landingPageData[0].labelDisplay
+                                                                        /*landingPageData[0].labelDisplay*/
                                                                     )
                                                                 )
                                                             ), landingPageData.map {
                                                                 LazyLoadComponent(
                                                                     it.uuid,
                                                                     it.viewMode,
-                                                                    getLabelDisplayFlag(it.labelDisplay)
+                                                                    getLabelDisplayFlag(/*it.labelDisplay*/)
                                                                 )
                                                             }.drop(1)
                                                         )
@@ -169,7 +169,7 @@ class LandingRepository internal constructor(
                                                     LazyLoadComponent(
                                                         it.uuid,
                                                         it.viewMode,
-                                                        getLabelDisplayFlag(it.labelDisplay)
+                                                        getLabelDisplayFlag(/*it.labelDisplay*/)
                                                     )
                                                 }.drop(1)
                                             )
@@ -1595,8 +1595,8 @@ class LandingRepository internal constructor(
     }
 
 
-    private fun getLabelDisplayFlag(labelDisplay: BaseLabelDisplay?): Boolean {
-        return when (labelDisplay) {
+    private fun getLabelDisplayFlag(labelDisplay: BaseLabelDisplay? = null): Boolean {
+        /*return when (labelDisplay) {
             null -> {
                 false
             }
@@ -1611,7 +1611,8 @@ class LandingRepository internal constructor(
                     else -> false
                 }
             }
-        }
+        }*/
+        return false
     }
 
 

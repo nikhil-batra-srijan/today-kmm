@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AuthorDetailResponse(
     @SerialName("image_url")
-    val imageUrl: String?,
+    val imageUrl: String? = null,
     @SerialName("name")
-    val name: String?,
+    val name: String? = null,
     @SerialName("url")
-    val url: String?
+    val url: String? = null
 )

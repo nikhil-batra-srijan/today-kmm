@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ComponentDetailResponse(
     @SerialName("result")
-    val result: ComponentDetailResultResponse?
+    val result: ComponentDetailResultResponse? = null
 )

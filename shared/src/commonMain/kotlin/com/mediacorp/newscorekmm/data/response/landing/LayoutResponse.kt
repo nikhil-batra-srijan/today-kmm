@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LayoutResponse(
     @SerialName("layout_section")
-    val layoutSection: LayoutSectionResponse?
+    val layoutSection: LayoutSectionResponse? = null
 )

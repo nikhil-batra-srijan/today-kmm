@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LandingResponse(
     @SerialName("result")
-    val result: LandingResultResponse?
+    val result: LandingResultResponse? = null
 )
 
 

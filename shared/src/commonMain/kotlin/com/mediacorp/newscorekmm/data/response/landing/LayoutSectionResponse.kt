@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LayoutSectionResponse(
     @SerialName("background_color")
-    val backgroundColor: String?,
+    val backgroundColor: String? = null,
     @SerialName("background_image")
-    val backgroundImage: String?,
+    val backgroundImage: String? = null,
     @SerialName("classes")
-    val classes: String?,
+    val classes: String? = null,
     @SerialName("component")
-    val component: List<ComponentResponse>?,
+    val component: List<ComponentResponse>? = null,
     @SerialName("layoutId")
-    val layoutId: String?
+    val layoutId: String? = null
 )

@@ -11,7 +11,7 @@ object CommonApiClient {
         install(JsonFeature) {
             val json = kotlinx.serialization.json.Json {
                 ignoreUnknownKeys = true
-                serializersModule = getSerializersModule()
+                //serializersModule = getSerializersModule()
             }
             serializer = KotlinxSerializer(json)
         }

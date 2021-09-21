@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ImageByLineAndSourceResponse(
     @SerialName("byline")
-    val byline: String?,
+    val byline: String? = null,
     @SerialName("entry_found")
-    val entryFound: Boolean?,
+    val entryFound: Boolean? = null,
     @SerialName("source")
-    val source: String?
+    val source: String? = null
 )

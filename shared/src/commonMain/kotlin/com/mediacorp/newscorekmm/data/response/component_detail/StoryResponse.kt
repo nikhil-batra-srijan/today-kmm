@@ -8,51 +8,51 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StoryResponse(
     @SerialName("absolute_url")
-    val absoluteUrl: String?,
+    val absoluteUrl: String? = null,
     @SerialName("author")
-    val author: String?,
+    val author: String? = null,
     @SerialName("author_detail")
-    val authorDetail: AuthorDetailResponse?,
+    val authorDetail: AuthorDetailResponse? = null,
     @SerialName("category")
-    val category: String?,
+    val category: String? = null,
     @SerialName("category_url")
-    val categoryUrl: String?,
+    val categoryUrl: String? = null,
     @SerialName("changed_date")
-    val changedDate: String?,
+    val changedDate: String? = null,
     @SerialName("content_origin")
-    val contentOrigin: String?,
+    val contentOrigin: String? = null,
     @SerialName("date")
-    val date: String?,
+    val date: String? = null,
     @SerialName("description")
-    val description: String?,
+    val description: String? = null,
     @SerialName("duration")
-    val duration: String?,
+    val duration: String? = null,
     @SerialName("flag")
-    val flag: String?,
+    val flag: String? = null,
     @SerialName("image_url")
-    val imageUrl: String?,
+    val imageUrl: String? = null,
     @SerialName("liveblog_source")
-    val liveblogSource: String?,
+    val liveblogSource: String? = null,
     @SerialName("media_count")
-    val mediaCount: Int?,
+    val mediaCount: Int? = null,
     @SerialName("media_type")
-    val mediaType: String?,
+    val mediaType: String? = null,
     @SerialName("nid")
-    val nid: String?,
+    val nid: String? = null,
     @SerialName("release_date")
-    val releaseDate: String?,
+    val releaseDate: String? = null,
     @SerialName("show_as_web_view")
-    val showAsWebView: Boolean?,
+    val showAsWebView: Boolean? = null,
     @SerialName("title")
-    val title: String?,
+    val title: String? = null,
     @SerialName("title_url")
-    val titleUrl: String?,
+    val titleUrl: String? = null,
     @SerialName("type")
-    val type: String?,
+    val type: String? = null,
     @SerialName("uuid")
-    val uuid: String?,
+    val uuid: String? = null,
     @SerialName("video")
-    val video: VideoResponse?
+    val video: VideoResponse? = null
     //TODO Add byline and source implementation for image
     /*,
     @SerialName("image_byline_and_source")
@@ -74,7 +74,7 @@ data class ImageByLineAndSourceList(val imageByLineAndSource: List<ImageBylineAn
 @Serializable
 data class ImageBylineAndSource(
     @SerialName("byline")
-    val byline: String?,
+    val byline: String? = null,
     @SerialName("source")
-    val source: String?,
+    val source: String? = null,
 )

@@ -6,21 +6,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LandingResultResponse(
     @SerialName("title")
-    val title: String?,
+    val title: String? = null,
     @SerialName("webview")
-    val webview: String?,
+    val webview: String? = null,
     @SerialName("view_mode")
-    val viewMode: String?,
+    val viewMode: String? = null,
     @SerialName("brief")
-    val brief: String?,
+    val brief: String? = null,
     @SerialName("url")
-    val url: String?,
+    val url: String? = null,
     @SerialName("image")
-    val image: String?,
+    val image: String? = null,
     @SerialName("image_mobile")
-    val imageMobile: String?,
+    val imageMobile: String? = null,
     @SerialName("uuid")
-    val uuid: String?,
+    val uuid: String? = null,
     @SerialName("layout")
-    val layout: List<LayoutResponse>?,
+    val layout: List<LayoutResponse>? = null,
 )

@@ -6,43 +6,43 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ComponentDetailResultResponse(
     @SerialName("data")
-    val storyResponse: List<StoryResponse>?,
+    val storyResponse: List<StoryResponse>? = null,
     @SerialName("field_count")
-    val fieldCount: Int?,
+    val fieldCount: Int? = null,
     @SerialName("field_exclude_dedupe")
-    val fieldExcludeDedupe: String?,
+    val fieldExcludeDedupe: String? = null,
     @SerialName("field_offset")
-    val fieldOffset: Int?,
+    val fieldOffset: Int? = null,
     @SerialName("field_sub_description")
-    val fieldSubDescription: String?,
+    val fieldSubDescription: String? = null,
     @SerialName("id")
-    val id: String?,
+    val id: String? = null,
     @SerialName("title")
-    val title: String?,
+    val title: String? = null,
     @SerialName("type")
     val type: String,
     @SerialName("uuid")
     val uuid: String,
     @SerialName("view_more_title")
-    val viewMoreTitle: String?,
+    val viewMoreTitle: String? = null,
     @SerialName("view_more_url")
-    val viewMoreUrl: String?,
+    val viewMoreUrl: String? = null,
     @SerialName("view_more_url_field_id")
-    val viewMoreUrlFieldId: String?,
+    val viewMoreUrlFieldId: String? = null,
     @SerialName("view_more_url_field_type")
-    val viewMoreUrlFieldType: String?,
+    val viewMoreUrlFieldType: String? = null,
     @SerialName("image")
-    val imageUrl: String?,
+    val imageUrl: String? = null,
     @SerialName("label")
-    val label: String?,
+    val label: String? = null,
     @SerialName("body")
-    val body: String?,
+    val body: String? = null,
     @SerialName("placeholder")
-    val placeholder: String?,
+    val placeholder: String? = null,
     @SerialName("subscription_type")
-    val subscriptionType: String?,
+    val subscriptionType: String? = null,
     @SerialName("sub_description")
-    val subDescription: String?,
+    val subDescription: String? = null,
     @SerialName("html")
-    val htmlString: String?
+    val htmlString: String? = null
 )

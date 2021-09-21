@@ -11,6 +11,7 @@ class LandingService(private val baseUrl: String) {
         return try {
             CommonApiClient.httpClient.get("$baseUrl$LANDING_API$landingPageId")
         } catch (e: Exception) {
+           print("apiException:"+e.message)
             null
         }
     }

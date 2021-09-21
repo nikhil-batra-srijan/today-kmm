@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class InfiniteScrollResponse(
     @SerialName("result")
-    val result: List<StoryResponse>?
+    val result: List<StoryResponse>? = null
 )
