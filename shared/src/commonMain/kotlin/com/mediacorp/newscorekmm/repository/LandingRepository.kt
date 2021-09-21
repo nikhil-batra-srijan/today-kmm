@@ -232,7 +232,7 @@ class LandingRepository internal constructor(
         page: Int
     ): CFlow<InfiniteScrollData> = CFlow(flow {
         infiniteScrollService.getInfiniteScrollList(uuid, viewMode, page)?.let {
-            if (it.result == null) {
+            if (it.result.isNullOrEmpty()) {
                 emit(InfiniteScrollError)
             } else {
                 interpretStoryList(
@@ -273,291 +273,338 @@ class LandingRepository internal constructor(
         return when {
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.middle9s5p -> {
-                MiddleNineStoriesFivePicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
-                    )
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    MiddleNineStoriesFivePicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
 
-                )
+                    )
+                }
 
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.left7s5p -> {
-                SevenStoriesFivePicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    SevenStoriesFivePicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.listing4s4p -> {
-                ListingFourStoriesFourPicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    ListingFourStoriesFourPicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.largeTiles2s2p -> {
-                LargeTilesTwoStoriesTwoPicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    LargeTilesTwoStoriesTwoPicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.aLeft5s5p -> {
-                FiveStoriesFivePicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    FiveStoriesFivePicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.aMiddle8s6p -> {
-                MiddleEightStoriesSixPicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    MiddleEightStoriesSixPicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.carouselWithoutNumbersFullWidth -> {
-                CarouselWithoutNumbersFullWidthComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretSubTitle(compResult.fieldSubDescription),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    CarouselWithoutNumbersFullWidthComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretSubTitle(compResult.fieldSubDescription),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.featuredVideoLeft5s5p -> {
-                FeaturedVideoLeftFiveStoriesFivePicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
-                    ),
-                    true
-                )
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    FeaturedVideoLeftFiveStoriesFivePicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        ), true
+                    )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.carouselJournalistsFull -> {
-                CarouselJournalistsFullComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
-                    ) as List<JournalistCarouselItem>
-                )
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    CarouselJournalistsFullComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        ) as List<JournalistCarouselItem>
+                    )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.minuteFullWidth -> {
-                MinuteFullWidthComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretSubTitle(compResult.fieldSubDescription),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    MinuteFullWidthComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretSubTitle(compResult.fieldSubDescription),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.featuredImageLeft9s6p -> {
-                FeaturedImageNineStoriesFivePicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    FeaturedImageNineStoriesFivePicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.featuredImageLeft8s5p -> {
-                FeaturedImageLeftEightStoriesFivePicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    FeaturedImageLeftEightStoriesFivePicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.aLeft5s5pAds -> {
-                LeftFiveStoriesFivePicsAdsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    LeftFiveStoriesFivePicsAdsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.featuredImageMiddle8s4p -> {
-                FeaturedImageMiddleEightStoriesFivePicsComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    FeaturedImageMiddleEightStoriesFivePicsComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.infiniteScrollListingTdy -> {
-                InfiniteScrollListingTdyComponent(
-                    compResult.uuid,
-                    viewMode,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
-                    )
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    InfiniteScrollListingTdyComponent(
+                        compResult.uuid,
+                        viewMode,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
 
-                )
+                    )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.defaultViewMode -> {
-                DefaultListingComponent(
-                    compResult.uuid,
-                    interpretTitle(labelDisplay, compResult.title),
-                    interpretCta(
-                        compResult.viewMoreTitle,
-                        compResult.viewMoreUrlFieldId,
-                        compResult.viewMoreUrlFieldType,
-                        compResult.viewMoreUrl
-                    ),
-                    interpretStoryList(
-                        compResult.storyResponse,
-                        detectViewModeTypeFromViewMode(viewMode)
+                interpretMandatoryStoryList(compResult.storyResponse)
+                { storyResponse ->
+                    DefaultListingComponent(
+                        compResult.uuid,
+                        interpretTitle(labelDisplay, compResult.title),
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        ),
+                        interpretStoryList(
+                            storyResponse,
+                            detectViewModeTypeFromViewMode(viewMode)
+                        )
                     )
-                )
+                }
             }
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.spotlight
@@ -709,13 +756,21 @@ class LandingRepository internal constructor(
         }
     }
 
-    private fun interpretStoryList(
+    private fun interpretMandatoryStoryList(
         storyResponse: List<StoryResponse>?,
+        block: (List<StoryResponse>) -> LandingPageComponent
+    ): LandingPageComponent {
+        return if (storyResponse.isNullOrEmpty()) {
+            ComponentError
+        } else {
+            block.invoke(storyResponse)
+        }
+    }
+
+    private fun interpretStoryList(
+        storyResponse: List<StoryResponse>,
         viewModeType: ViewModeType
     ): List<ComponentDetailStoryItem> {
-        if (storyResponse.isNullOrEmpty()) {
-            return emptyList()
-        }
         return when (viewModeType) {
             ViewModeType.aLeft5s5p -> {
                 storyResponse.mapIndexed { index, item ->
