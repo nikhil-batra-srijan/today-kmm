@@ -183,8 +183,7 @@ class LandingRepository internal constructor(
         } ?: emit(LandingPageError)
     })
 
-    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): CFlow<LandingPageComponent> =
-        CFlow(flow {
+    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): CFlow<LandingPageComponent> = CFlow(flow {
             landingService.getComponentDetails(lazyLoadComponent.uuid, lazyLoadComponent.viewMode)
                 ?.let { componentDetailResponse ->
                     componentDetailResponse.result?.let { componentDetailResultResponse ->
