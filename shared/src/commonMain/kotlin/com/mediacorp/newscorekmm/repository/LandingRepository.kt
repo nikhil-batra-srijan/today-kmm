@@ -31,6 +31,7 @@ import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScro
 import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScrollData
 import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScrollError
 import com.mediacorp.newscorekmm.domain.dto.landing.landing_page.*
+import com.mediacorp.newscorekmm.ext.CFlow
 import com.mediacorp.newscorekmm.network.InfiniteScrollService
 import com.mediacorp.newscorekmm.network.LandingService
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +44,7 @@ class LandingRepository internal constructor(
 
     private val landingPageStoryList = mutableListOf<StoryResponse>()
 
-    fun fetchLandingPage(landingPageId: String): Flow<LandingPageData> = flow {
+    fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> = CFlow(flow {
         landingPageStoryList.clear()
         landingService.getLanding(landingPageId)?.result?.let { landingResultResponse ->
             when {
@@ -184,10 +185,10 @@ class LandingRepository internal constructor(
             }
 
         } ?: emit(LandingPageError)
-    }
+    })
 
-    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): Flow<LandingPageComponent> =
-        flow {
+    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): CFlow<LandingPageComponent> =
+        CFlow(flow {
             landingService.getComponentDetails(lazyLoadComponent.uuid, lazyLoadComponent.viewMode)
                 ?.let { componentDetailResponse ->
                     componentDetailResponse.result?.let { componentDetailResultResponse ->
@@ -227,13 +228,13 @@ class LandingRepository internal constructor(
 
                 } ?: emit(ComponentError)
 
-        }
+        })
 
     fun fetchInfiniteScrollComponent(
         uuid: String,
         viewMode: String,
         page: Int
-    ): Flow<InfiniteScrollData> = flow {
+    ): CFlow<InfiniteScrollData> = CFlow(flow {
         infiniteScrollService.getInfiniteScrollList(uuid, viewMode, page)?.let {
             if (it.result == null) {
                 emit(InfiniteScrollError)
@@ -261,7 +262,7 @@ class LandingRepository internal constructor(
 
         }
             ?: emit(InfiniteScrollError)
-    }
+    })
 
     private fun getLandingPageComponent(
         componentResponse: ComponentDetailResponse,
