@@ -12,7 +12,7 @@ fun interface Closeable {
 }
 
 class CFlow<T: Any> constructor(private val origin: Flow<T>) : Flow<T> by origin {
-    fun watch(block: (T) -> T): Closeable {
+    fun watch(block: (T) -> Unit): Closeable {
         val job = Job()
 
         onEach {
