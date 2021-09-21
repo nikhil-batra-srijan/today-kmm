@@ -44,7 +44,7 @@ class LandingRepository internal constructor(
 
     private val landingPageStoryList = mutableListOf<StoryResponse>()
 
-    fun getSomeInterfaceValue(): SomeInterface = listOf(
+    fun getSomeInterfaceValue(): List<SomeInterface> = listOf(
         ValueOne("Hello"), ValueTwo("World")
     )
 
