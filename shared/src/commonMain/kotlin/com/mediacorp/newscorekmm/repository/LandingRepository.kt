@@ -238,21 +238,22 @@ class LandingRepository internal constructor(
                 interpretStoryList(
                     it.result,
                     ViewModeType.infinitListing
-                ).let { infiniteStoryList ->
-                    if (infiniteStoryList.isEmpty()) {
-                        emit(InfiniteScrollError)
-                    } else {
-                        emit(
-                            InfiniteScrollComponentData(
-                                uuid,
-                                viewMode,
-                                page.plus(1),
-                                infiniteStoryList
+                ).filter { item -> item !is ComponentDetailStoryItemError }
+                    .let { infiniteStoryList ->
+                        if (infiniteStoryList.isEmpty()) {
+                            emit(InfiniteScrollError)
+                        } else {
+                            emit(
+                                InfiniteScrollComponentData(
+                                    uuid,
+                                    viewMode,
+                                    page.plus(1),
+                                    infiniteStoryList
+                                )
                             )
-                        )
 
+                        }
                     }
-                }
 
             }
 
@@ -275,21 +276,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.middle9s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    MiddleNineStoriesFivePicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
-                        )
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        MiddleNineStoriesFivePicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            pureStoryList
 
-                    )
+                        )
+                    }
+
+
                 }
 
             }
@@ -298,20 +304,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.left7s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    SevenStoriesFivePicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        SevenStoriesFivePicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -319,20 +331,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.listing4s4p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    ListingFourStoriesFourPicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        ListingFourStoriesFourPicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -340,20 +358,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.largeTiles2s2p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    LargeTilesTwoStoriesTwoPicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        LargeTilesTwoStoriesTwoPicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -361,20 +385,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.aLeft5s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    FiveStoriesFivePicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        FiveStoriesFivePicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -382,20 +412,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.aMiddle8s6p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    MiddleEightStoriesSixPicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        MiddleEightStoriesSixPicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -403,21 +439,27 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.carouselWithoutNumbersFullWidth -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    CarouselWithoutNumbersFullWidthComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretSubTitle(compResult.fieldSubDescription),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        CarouselWithoutNumbersFullWidthComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretSubTitle(compResult.fieldSubDescription),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -425,20 +467,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.featuredVideoLeft5s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    FeaturedVideoLeftFiveStoriesFivePicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
-                        ), true
-                    )
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        FeaturedVideoLeftFiveStoriesFivePicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            ), true
+                        )
+                    }
                 }
             }
 
@@ -446,20 +494,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.carouselJournalistsFull -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    CarouselJournalistsFullComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
-                        ) as List<JournalistCarouselItem>
-                    )
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        CarouselJournalistsFullComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            ) as List<JournalistCarouselItem>
+                        )
+                    }
                 }
             }
 
@@ -467,21 +521,27 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.minuteFullWidth -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    MinuteFullWidthComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretSubTitle(compResult.fieldSubDescription),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        MinuteFullWidthComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretSubTitle(compResult.fieldSubDescription),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -489,20 +549,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.featuredImageLeft9s6p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    FeaturedImageNineStoriesFivePicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        FeaturedImageNineStoriesFivePicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -510,20 +576,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.featuredImageLeft8s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    FeaturedImageLeftEightStoriesFivePicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        FeaturedImageLeftEightStoriesFivePicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -531,20 +603,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.aLeft5s5pAds -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    LeftFiveStoriesFivePicsAdsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        LeftFiveStoriesFivePicsAdsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -552,20 +630,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.featuredImageMiddle8s4p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    FeaturedImageMiddleEightStoriesFivePicsComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        FeaturedImageMiddleEightStoriesFivePicsComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -573,16 +657,22 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.infiniteScrollListingTdy -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    InfiniteScrollListingTdyComponent(
-                        compResult.uuid,
-                        viewMode,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
-                        )
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        InfiniteScrollListingTdyComponent(
+                            compResult.uuid,
+                            viewMode,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
 
-                    )
+                        )
+                    }
                 }
             }
 
@@ -590,20 +680,26 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.defaultViewMode -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
-                    DefaultListingComponent(
-                        compResult.uuid,
-                        interpretTitle(labelDisplay, compResult.title),
-                        interpretCta(
-                            compResult.viewMoreTitle,
-                            compResult.viewMoreUrlFieldId,
-                            compResult.viewMoreUrlFieldType,
-                            compResult.viewMoreUrl
-                        ),
-                        interpretStoryList(
-                            storyResponse,
-                            detectViewModeTypeFromViewMode(viewMode)
+                    val interpretedList = interpretStoryList(
+                        storyResponse,
+                        detectViewModeTypeFromViewMode(viewMode)
+                    ).filter { it !is ComponentDetailStoryItemError }
+                    interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
+                        DefaultListingComponent(
+                            compResult.uuid,
+                            interpretTitle(labelDisplay, compResult.title),
+                            interpretCta(
+                                compResult.viewMoreTitle,
+                                compResult.viewMoreUrlFieldId,
+                                compResult.viewMoreUrlFieldType,
+                                compResult.viewMoreUrl
+                            ),
+                            interpretStoryList(
+                                storyResponse,
+                                detectViewModeTypeFromViewMode(viewMode)
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -756,9 +852,9 @@ class LandingRepository internal constructor(
         }
     }
 
-    private fun interpretMandatoryStoryList(
-        storyResponse: List<StoryResponse>?,
-        block: (List<StoryResponse>) -> LandingPageComponent
+    private fun <T> interpretMandatoryStoryList(
+        storyResponse: List<T>?,
+        block: (List<T>) -> LandingPageComponent
     ): LandingPageComponent {
         return if (storyResponse.isNullOrEmpty()) {
             ComponentError
