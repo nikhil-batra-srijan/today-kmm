@@ -18,9 +18,8 @@ data class ComponentResponse(
     val imageMediaMobile: String? = null,
     @SerialName("label")
     val label: String? = null,
-   /* @SerialName("label_display")
-    @Polymorphic
-    val labelDisplay: BaseLabelDisplay? = null,*/
+    @SerialName("label_display")
+    val labelDisplay: String? = null,
     @SerialName("mobile_widget_id")
     val mobileWidgetId: String? = null,
     @SerialName("placeholder")
