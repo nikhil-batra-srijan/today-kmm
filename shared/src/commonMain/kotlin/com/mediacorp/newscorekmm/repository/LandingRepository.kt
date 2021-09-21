@@ -44,6 +44,14 @@ class LandingRepository internal constructor(
 
     private val landingPageStoryList = mutableListOf<StoryResponse>()
 
+    fun getSomeInterfaceValue(): SomeInterface = listOf(
+        ValueOne("Hello"), ValueTwo("World")
+    )
+
+    interface SomeInterface
+    data class ValueOne(val value: String) : SomeInterface
+    data class ValueTwo(val value: String) : SomeInterface
+
     fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> = CFlow(flow {
         landingPageStoryList.clear()
         landingService.getLanding(landingPageId)?.result?.let { landingResultResponse ->
