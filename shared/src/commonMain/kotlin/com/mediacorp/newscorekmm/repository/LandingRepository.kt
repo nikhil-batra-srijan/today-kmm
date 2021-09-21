@@ -122,7 +122,7 @@ class LandingRepository internal constructor(
                                                                             ),
                                                                             landingPageData[0].viewMode,
                                                                             getLabelDisplayFlag(
-                                                                                 landingPageData[0].labelDisplay
+                                                                                landingPageData[0].labelDisplay
                                                                             )
                                                                         )
                                                                     ), landingPageData.map {
@@ -264,6 +264,7 @@ class LandingRepository internal constructor(
             ?: emit(InfiniteScrollError)
     })
 
+    @Suppress("UNCHECKED_CAST")
     private fun getLandingPageComponent(
         componentResponse: ComponentDetailResponse,
         viewMode: String,
@@ -436,7 +437,7 @@ class LandingRepository internal constructor(
                     interpretStoryList(
                         compResult.storyResponse,
                         detectViewModeTypeFromViewMode(viewMode)
-                    )
+                    ) as List<JournalistCarouselItem>
                 )
             }
 
