@@ -315,10 +315,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -342,10 +339,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -369,10 +363,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -396,10 +387,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -423,10 +411,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -451,10 +436,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -478,10 +460,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            ), true
+                            pureStoryList, true
                         )
                     }
                 }
@@ -505,10 +484,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            ) as List<JournalistCarouselItem>
+                            pureStoryList as List<JournalistCarouselItem>
                         )
                     }
                 }
@@ -533,10 +509,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -560,10 +533,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -587,10 +557,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -614,10 +581,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -641,10 +605,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -663,10 +624,7 @@ class LandingRepository internal constructor(
                             compResult.uuid,
                             viewMode,
                             interpretTitle(labelDisplay, compResult.title),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
 
                         )
                     }
@@ -691,10 +649,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            interpretStoryList(
-                                storyResponse,
-                                detectViewModeTypeFromViewMode(viewMode)
-                            )
+                            pureStoryList
                         )
                     }
                 }
@@ -1750,7 +1705,7 @@ class LandingRepository internal constructor(
             WithoutByLine
         } else {
             if (!mediaType.isNullOrEmpty() && mediaType == VIDEO_MEDIA_TYPE) {
-                WithByLineVideo(author,)
+                WithByLineVideo(author)
             } else {
                 WithByLineArticle(author)
             }
