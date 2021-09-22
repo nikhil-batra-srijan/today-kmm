@@ -988,7 +988,7 @@ class LandingRepository internal constructor(
                                     item.author,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl,
+                                        item.authorDetail?.imageUrl,
                                         item.imageByLineAndSource
                                     ),
                                 )
