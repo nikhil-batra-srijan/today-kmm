@@ -1,6 +1,7 @@
 package com.mediacorp.newscorekmm.repository
 
 import com.mediacorp.newscorekmm.data.response.component_detail.ComponentDetailResponse
+import com.mediacorp.newscorekmm.data.response.component_detail.ImageBylineAndSource
 import com.mediacorp.newscorekmm.data.response.component_detail.StoryResponse
 import com.mediacorp.newscorekmm.data.response.component_detail.VideoResponse
 import com.mediacorp.newscorekmm.domain.dto.landing.component.*
@@ -876,7 +877,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     WithoutDescription,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -895,7 +898,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -926,7 +930,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     WithoutDescription,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -958,7 +964,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -977,7 +985,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1024,7 +1033,8 @@ class LandingRepository internal constructor(
                                     item.author,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                 )
                             }
@@ -1046,7 +1056,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretTimeStampData(item.releaseDate),
                                     interpretEmphasisLogic(
@@ -1076,7 +1087,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1095,7 +1108,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1142,7 +1156,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1161,7 +1177,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1208,7 +1225,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1227,7 +1246,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1274,7 +1294,8 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1293,7 +1314,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1324,7 +1346,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1343,7 +1367,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1373,7 +1398,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1404,7 +1430,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1423,7 +1451,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1469,7 +1498,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1500,7 +1530,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1519,7 +1551,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1564,7 +1597,8 @@ class LandingRepository internal constructor(
                                     item.uuid,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     )
                                 )
                             }
@@ -1587,7 +1621,9 @@ class LandingRepository internal constructor(
                                     item.title,
                                     interpretStoryItemDescription(item.description),
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource,
+                                        true
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1606,7 +1642,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1636,7 +1673,8 @@ class LandingRepository internal constructor(
                                     item.absoluteUrl,
                                     item.title,
                                     interpretStoryItemImage(
-                                        item.imageUrl
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
                                     ),
                                     interpretStoryByLineData(item.author, item.mediaType),
                                     interpretTimeStampData(item.releaseDate),
@@ -1677,13 +1715,33 @@ class LandingRepository internal constructor(
     }
 
     private fun interpretStoryItemImage(
-        imageUrl: String?
+        imageUrl: String?,
+        imageByLineAndSource: ImageBylineAndSource?,
+        interpretByline: Boolean = false
     ): ImageData {
-        //TODO write logic for image byline and source over image
-        return if (imageUrl.isNullOrEmpty()) {
-            WithoutImage
-        } else {
-            WithImage(imageUrl)
+        return when {
+            imageUrl.isNullOrEmpty() -> {
+                WithoutImage
+            }
+            else -> {
+                if (imageByLineAndSource != null && interpretByline) {
+                    when {
+                        imageByLineAndSource.byline.isNullOrBlank() && !imageByLineAndSource.source.isNullOrBlank() -> {
+                            WithImageAndByLine(imageUrl, imageByLineAndSource.source)
+                        }
+                        !imageByLineAndSource.byline.isNullOrBlank() && !imageByLineAndSource.source.isNullOrBlank() -> {
+                            WithImageAndByLine(
+                                imageUrl,
+                                "${imageByLineAndSource.source} / ${imageByLineAndSource.byline}"
+                            )
+                        }
+                        else -> WithImage(imageUrl)
+                    }
+                } else {
+                    WithImage(imageUrl)
+                }
+
+            }
         }
     }
 
@@ -1692,7 +1750,7 @@ class LandingRepository internal constructor(
             WithoutByLine
         } else {
             if (!mediaType.isNullOrEmpty() && mediaType == VIDEO_MEDIA_TYPE) {
-                WithByLineVideo(author)
+                WithByLineVideo(author,)
             } else {
                 WithByLineArticle(author)
             }
