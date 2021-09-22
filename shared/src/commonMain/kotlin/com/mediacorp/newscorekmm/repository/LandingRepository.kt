@@ -24,7 +24,7 @@ import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_middle_nine_sto
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_minute_full_width.MinuteFullWidthComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.component.dl_seven_stoies_five_pics.SevenStoriesFivePicsComponent
 import com.mediacorp.newscorekmm.domain.dto.landing.component.full_interactive.*
-import com.mediacorp.newscorekmm.domain.dto.landing.component.full_spotlight.SpotLightComponent
+import com.mediacorp.newscorekmm.domain.dto.landing.component.full_spotlight.*
 import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScrollComponentData
 import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScrollData
 import com.mediacorp.newscorekmm.domain.dto.landing.infinite_scroll.InfiniteScrollError
@@ -657,12 +657,16 @@ class LandingRepository internal constructor(
 
             detectComponentTypeFromType(componentResponse.result.type) == ComponentType.spotlight
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.full -> {
-                if (!compResult.imageUrl.isNullOrBlank() && !compResult.viewMoreUrl.isNullOrBlank() && !compResult.viewMoreUrlFieldType.isNullOrBlank()) {
+                if (!compResult.imageUrl.isNullOrBlank()) {
                     SpotLightComponent(
                         compResult.uuid,
                         compResult.imageUrl,
-                        compResult.viewMoreUrl,
-                        compResult.viewMoreUrlFieldType
+                        interpretViewMoreUrlType(
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrl
+                        )
+
                     )
                 } else {
                     ComponentError
@@ -801,6 +805,41 @@ class LandingRepository internal constructor(
             WithoutInteractiveViewMoreUrl
         } else {
             WithInteractiveViewMoreUrl(url)
+        }
+    }
+
+    private fun interpretViewMoreUrlType(
+        viewMoreUrlFieldType: String?,
+        viewMoreUrlFieldId: String?,
+        viewMoreUrl: String?
+    ): SpotLightActionData {
+        return if (viewMoreUrlFieldId.isNullOrBlank()) {
+            if (!viewMoreUrl.isNullOrBlank()) {
+                WithWebViewAction(viewMoreUrl)
+            } else {
+                WithoutAction
+            }
+        } else {
+            when (viewMoreUrlFieldType) {
+                LANDING_PAGE_CTA -> {
+                    WithLandingPageAction(viewMoreUrlFieldId)
+                }
+                ARTICLE_DETAIL_CTA -> {
+                    WithArticleDetailAction(viewMoreUrlFieldId)
+                }
+                VIDEO_DETAIL_CTA -> {
+                    WithVideoDetailAction(viewMoreUrlFieldId)
+                }
+                else -> {
+                    if (!viewMoreUrl.isNullOrBlank()) {
+                        WithWebViewAction(viewMoreUrl)
+                    } else {
+                        WithoutAction
+                    }
+                }
+            }
+
+
         }
     }
 
