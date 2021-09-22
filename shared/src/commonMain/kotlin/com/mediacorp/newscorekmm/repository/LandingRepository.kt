@@ -812,7 +812,7 @@ class LandingRepository internal constructor(
         viewMoreUrlFieldType: String?,
         viewMoreUrlFieldId: String?,
         viewMoreUrl: String?
-    ): SpotLightActionData {
+    ): SpotLightRedirectionData {
         return if (viewMoreUrlFieldId.isNullOrBlank()) {
             if (!viewMoreUrl.isNullOrBlank()) {
                 WithWebViewAction(viewMoreUrl)

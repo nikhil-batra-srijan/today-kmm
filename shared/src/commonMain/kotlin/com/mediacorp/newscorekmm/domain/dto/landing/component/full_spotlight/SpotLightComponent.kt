@@ -4,12 +4,12 @@ import com.mediacorp.newscorekmm.domain.dto.landing.component.LandingPageCompone
 
 data class SpotLightComponent(
     val uuid: String, val image: String,
-    val spotLightActionData: SpotLightActionData
+    val spotLightRedirectionData: SpotLightRedirectionData
 ) : LandingPageComponent
 
-interface SpotLightActionData
-data class WithLandingPageAction(val landingPageId: String) : SpotLightActionData
-data class WithArticleDetailAction(val articleDetailId: String) : SpotLightActionData
-data class WithVideoDetailAction(val videoDetailId: String) : SpotLightActionData
-data class WithWebViewAction(val webViewUrl: String) : SpotLightActionData
-object WithoutAction : SpotLightActionData
+interface SpotLightRedirectionData
+data class WithLandingPageAction(val landingPageId: String) : SpotLightRedirectionData
+data class WithArticleDetailAction(val articleDetailId: String) : SpotLightRedirectionData
+data class WithVideoDetailAction(val videoDetailId: String) : SpotLightRedirectionData
+data class WithWebViewAction(val webViewUrl: String) : SpotLightRedirectionData
+object WithoutAction : SpotLightRedirectionData
