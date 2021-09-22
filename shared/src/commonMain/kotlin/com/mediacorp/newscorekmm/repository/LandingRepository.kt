@@ -1675,7 +1675,7 @@ class LandingRepository internal constructor(
         interpretByline: Boolean = false
     ): ImageData {
         return when {
-            imageUrl.isNullOrEmpty() -> {
+            imageUrl.isNullOrBlank() -> {
                 WithoutImage
             }
             else -> {
