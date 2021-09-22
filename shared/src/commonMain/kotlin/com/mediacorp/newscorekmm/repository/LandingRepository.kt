@@ -100,7 +100,7 @@ class LandingRepository internal constructor(
                                                                     LazyLoadComponent(
                                                                         it.uuid,
                                                                         it.viewMode,
-                                                                        getLabelDisplayFlag(it.labelDisplay)
+                                                                        it.labelView
                                                                     )
                                                                 }.drop(1)
                                                             )
@@ -117,15 +117,13 @@ class LandingRepository internal constructor(
                                                                                 )
                                                                             ),
                                                                             landingPageData[0].viewMode,
-                                                                            getLabelDisplayFlag(
-                                                                                landingPageData[0].labelDisplay
-                                                                            )
+                                                                            landingPageData[0].labelView
                                                                         )
                                                                     ), landingPageData.map {
                                                                         LazyLoadComponent(
                                                                             it.uuid,
                                                                             it.viewMode,
-                                                                            getLabelDisplayFlag(it.labelDisplay)
+                                                                            it.labelView
                                                                         )
                                                                     }.drop(1)
                                                                 )
@@ -141,15 +139,13 @@ class LandingRepository internal constructor(
                                                                 getLandingPageComponent(
                                                                     componentDetailResponse,
                                                                     landingPageData[0].viewMode,
-                                                                    getLabelDisplayFlag(
-                                                                        landingPageData[0].labelDisplay
-                                                                    )
+                                                                    landingPageData[0].labelView
                                                                 )
                                                             ), landingPageData.map {
                                                                 LazyLoadComponent(
                                                                     it.uuid,
                                                                     it.viewMode,
-                                                                    getLabelDisplayFlag(it.labelDisplay)
+                                                                    it.labelView
                                                                 )
                                                             }.drop(1)
                                                         )
@@ -165,7 +161,7 @@ class LandingRepository internal constructor(
                                                     LazyLoadComponent(
                                                         it.uuid,
                                                         it.viewMode,
-                                                        getLabelDisplayFlag(it.labelDisplay)
+                                                        it.labelView
                                                     )
                                                 }.drop(1)
                                             )
@@ -183,7 +179,8 @@ class LandingRepository internal constructor(
         } ?: emit(LandingPageError)
     })
 
-    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): CFlow<LandingPageComponent> = CFlow(flow {
+    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): CFlow<LandingPageComponent> =
+        CFlow(flow {
             landingService.getComponentDetails(lazyLoadComponent.uuid, lazyLoadComponent.viewMode)
                 ?.let { componentDetailResponse ->
                     componentDetailResponse.result?.let { componentDetailResultResponse ->

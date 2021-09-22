@@ -20,6 +20,8 @@ data class ComponentResponse(
     val label: String? = null,
     @SerialName("label_display")
     val labelDisplay: String? = null,
+    @SerialName("label_view")
+    val labelView: Boolean,
     @SerialName("mobile_widget_id")
     val mobileWidgetId: String? = null,
     @SerialName("placeholder")
