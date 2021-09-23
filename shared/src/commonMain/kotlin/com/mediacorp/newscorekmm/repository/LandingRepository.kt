@@ -1753,7 +1753,7 @@ class LandingRepository internal constructor(
 
     private fun interpretTimeStampData(releaseDate: String?): TimestampData {
         return if (!releaseDate.isNullOrBlank()) {
-            WithTimeStamp(releaseDate)
+            NoTimeStamp
         } else {
             NoTimeStamp
         }
