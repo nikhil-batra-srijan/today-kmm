@@ -1,13 +1,13 @@
 package com.mediacorp.newscorekmm.data.domain.dto.landing.component.full_interactive
 
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.LandingPageComponent
+import com.mediacorp.newscorekmm.data.domain.dto.landing.component.common.CtaData
 
 data class InteractiveComponent(
     val uuid: String,
     val title: String,
     val html: String,
-    val viewMoreTitle: InteractiveViewMoreTitle,
-    val viewMoreUrl: InteractiveViewMoreUrl
+    val ctaData: CtaData,
 ) : LandingPageComponent
 
 interface InteractiveViewMoreTitle

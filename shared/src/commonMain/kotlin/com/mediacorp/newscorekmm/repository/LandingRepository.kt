@@ -701,8 +701,12 @@ class LandingRepository internal constructor(
                         compResult.uuid,
                         compResult.title,
                         compResult.htmlString,
-                        interpretInteractiveInteractiveViewMoreTitle(compResult.viewMoreTitle),
-                        interpretInteractiveInteractiveViewMoreUrl(compResult.viewMoreUrl)
+                        interpretCta(
+                            compResult.viewMoreTitle,
+                            compResult.viewMoreUrlFieldId,
+                            compResult.viewMoreUrlFieldType,
+                            compResult.viewMoreUrl
+                        )
                     )
                 } else {
                     ComponentError
