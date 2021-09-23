@@ -436,7 +436,7 @@ class LandingRepository internal constructor(
                                 compResult.viewMoreUrlFieldType,
                                 compResult.viewMoreUrl
                             ),
-                            pureStoryList
+                            pureStoryList as List<WithoutNumberCarouselItem>
                         )
                     }
                 }
