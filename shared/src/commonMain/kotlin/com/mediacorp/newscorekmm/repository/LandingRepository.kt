@@ -683,7 +683,7 @@ class LandingRepository internal constructor(
                     DefaultSubscriptionComponent(
                         compResult.uuid,
                         title = compResult.title,
-                        policyLabel = compResult.subDescription ?: "",
+                        policyLabel = compResult.subDescription,
                         image = interpretSubscriptionImage(compResult.imageUrl),
                         body = compResult.body,
                         placeHolder = interpretSubscriptionPlaceholder(compResult.placeholder),
