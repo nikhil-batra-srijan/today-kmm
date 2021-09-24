@@ -30,7 +30,7 @@ fun String.getDateTime(): TimestampData {
                 WithLessThanOneHour
             }
             hours in 1..23 -> {
-                WithHoursAgo(hours = hours.toInt().toString())
+                WithHoursAgo(hours = hours)
             }
             hours in 24..47 -> {
                 WithDaysAgo("1")
