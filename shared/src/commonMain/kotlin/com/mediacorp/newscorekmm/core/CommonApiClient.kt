@@ -17,10 +17,10 @@ object CommonApiClient {
             serializer = KotlinxSerializer(json)
         }
         install(Logging) {
-            level = LogLevel.HEADERS
+            level = LogLevel.BODY
             logger = object : Logger {
                 override fun log(message: String) {
-                    Napier.v(tag = "ApiClient", message = message)
+                    Napier.v(tag = "NEWS_CORE_KMM", message = message)
                 }
             }
         }

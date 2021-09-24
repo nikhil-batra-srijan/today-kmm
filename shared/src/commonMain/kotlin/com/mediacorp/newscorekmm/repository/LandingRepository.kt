@@ -30,6 +30,7 @@ import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.Infinit
 import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollError
 import com.mediacorp.newscorekmm.data.domain.dto.landing.landing_page.*
 import com.mediacorp.newscorekmm.ext.CFlow
+import com.mediacorp.newscorekmm.ext.getDateTime
 import com.mediacorp.newscorekmm.network.InfiniteScrollService
 import com.mediacorp.newscorekmm.network.LandingService
 import kotlinx.coroutines.flow.flow
@@ -1757,7 +1758,7 @@ class LandingRepository internal constructor(
 
     private fun interpretTimeStampData(releaseDate: String?): TimestampData {
         return if (!releaseDate.isNullOrBlank()) {
-            NoTimeStamp
+            releaseDate.getDateTime()
         } else {
             NoTimeStamp
         }

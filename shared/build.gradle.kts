@@ -62,6 +62,8 @@ kotlin {
                 //Key-Value storage
                 //implementation("com.russhwolf:multiplatform-settings:0.7.7")
                 implementation("io.ktor:ktor-client-serialization:1.6.2")
+                //Date-Time
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
 
             }
         }
