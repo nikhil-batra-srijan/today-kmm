@@ -1758,7 +1758,8 @@ class LandingRepository internal constructor(
 
     private fun interpretTimeStampData(releaseDate: String?): TimestampData {
         return if (!releaseDate.isNullOrBlank()) {
-            releaseDate.getDateTime()
+            NoTimeStamp
+            //releaseDate.getDateTime()
         } else {
             NoTimeStamp
         }
