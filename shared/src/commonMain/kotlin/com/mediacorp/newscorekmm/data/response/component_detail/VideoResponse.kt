@@ -2,6 +2,9 @@ package com.mediacorp.newscorekmm.data.response.component_detail
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.toDuration
 
 @Serializable
 data class VideoResponse(
@@ -31,4 +34,17 @@ data class VideoResponse(
     val videoId: String? = null,
     @SerialName("video_url_mp4")
     val videoUrlMp4: String? = null
-)
+) {
+    @OptIn(ExperimentalTime::class)
+    fun String.toDurationString(): String {
+        if (this.isEmpty()) return ""
+        return this.toFloat().let { duration ->
+            val minute = duration.toLong().toDuration(DurationUnit.MINUTES).inWholeMinutes
+            if (minute > 1) {
+                "$minute"
+            } else {
+                "1"
+            }
+        }
+    }
+}

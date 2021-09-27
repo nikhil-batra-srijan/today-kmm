@@ -728,6 +728,10 @@ class LandingRepository internal constructor(
         }
     }
 
+    fun clearLandingPageStoryList() {
+        landingPageStoryList.clear()
+    }
+
 
     private fun interpretTitle(labelDisplay: Boolean, title: String?): TitleData {
         return if (labelDisplay && !title.isNullOrBlank()) WithTitle(
@@ -797,7 +801,7 @@ class LandingRepository internal constructor(
         }
     }
 
-    private fun interpretInteractiveInteractiveViewMoreTitle(viewMoreTitle: String?): InteractiveViewMoreTitle {
+    private fun interpretInteractiveViewMoreTitle(viewMoreTitle: String?): InteractiveViewMoreTitle {
         return if (viewMoreTitle.isNullOrBlank()) {
             WithoutInteractiveViewMoreTitle
         } else {
@@ -805,7 +809,7 @@ class LandingRepository internal constructor(
         }
     }
 
-    private fun interpretInteractiveInteractiveViewMoreUrl(url: String?): InteractiveViewMoreUrl {
+    private fun interpretInteractiveViewMoreUrl(url: String?): InteractiveViewMoreUrl {
         return if (url.isNullOrBlank()) {
             WithoutInteractiveViewMoreUrl
         } else {
@@ -1864,10 +1868,6 @@ class LandingRepository internal constructor(
                 newStoryResponse
             }
         }
-    }
-
-    fun clearLandingPageStoryList() {
-        landingPageStoryList.clear()
     }
 
     companion object {
