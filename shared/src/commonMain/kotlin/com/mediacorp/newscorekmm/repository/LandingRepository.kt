@@ -31,6 +31,8 @@ import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.Infinit
 import com.mediacorp.newscorekmm.data.domain.dto.landing.landing_page.*
 import com.mediacorp.newscorekmm.ext.CFlow
 import com.mediacorp.newscorekmm.ext.getDateTime
+import com.mediacorp.newscorekmm.ext.getVideoDuration
+import com.mediacorp.newscorekmm.ext.toDurationString
 import com.mediacorp.newscorekmm.network.InfiniteScrollService
 import com.mediacorp.newscorekmm.network.LandingService
 import kotlinx.coroutines.flow.flow
@@ -1069,7 +1071,8 @@ class LandingRepository internal constructor(
                                         item.mediaCount
                                     ),
                                     false,
-                                    interpretStoryByLineData(item.author, item.mediaType))
+                                    interpretStoryByLineData(item.author, item.mediaType)
+                                )
                             }
                             else -> ComponentDetailStoryItemError
                         }
@@ -1786,7 +1789,7 @@ class LandingRepository internal constructor(
             when (mediaType) {
                 VIDEO_MEDIA_TYPE -> {
                     if (video != null && !video.duration.isNullOrEmpty()) {
-                        WithVideo(video.duration)
+                        WithVideo(video.duration.getVideoDuration())
                     } else {
                         DefaultMediaType
                     }

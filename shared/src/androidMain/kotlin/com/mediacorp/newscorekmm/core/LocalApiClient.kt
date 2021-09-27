@@ -6,7 +6,6 @@ import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
-import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 
 actual object LocalApiClient {
