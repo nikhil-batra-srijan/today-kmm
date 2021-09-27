@@ -1068,8 +1068,8 @@ class LandingRepository internal constructor(
                                         item.video,
                                         item.mediaCount
                                     ),
-                                    false
-                                )
+                                    false,
+                                    interpretStoryByLineData(item.author, item.mediaType))
                             }
                             else -> ComponentDetailStoryItemError
                         }
