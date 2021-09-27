@@ -34,17 +34,4 @@ data class VideoResponse(
     val videoId: String? = null,
     @SerialName("video_url_mp4")
     val videoUrlMp4: String? = null
-) {
-    @OptIn(ExperimentalTime::class)
-    fun String.toDurationString(): String {
-        if (this.isEmpty()) return ""
-        return this.toFloat().let { duration ->
-            val minute = duration.toLong().toDuration(DurationUnit.MINUTES).inWholeMinutes
-            if (minute > 1) {
-                "$minute"
-            } else {
-                "1"
-            }
-        }
-    }
-}
+)
