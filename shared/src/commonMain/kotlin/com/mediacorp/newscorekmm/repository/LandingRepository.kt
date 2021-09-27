@@ -1391,11 +1391,12 @@ class LandingRepository internal constructor(
                     if (!item.nid.isNullOrBlank() && !item.uuid.isNullOrBlank() && !item.absoluteUrl.isNullOrBlank() && !item.title.isNullOrBlank()) {
                         when (index) {
                             in (0..storyResponse.size) -> {
-                                StoryItemWithLeftImage(
+                                FeaturedStoryItem(
                                     item.nid,
                                     item.uuid,
                                     item.absoluteUrl,
                                     item.title,
+                                    WithoutDescription,
                                     interpretStoryItemImage(
                                         item.imageUrl,
                                         item.imageByLineAndSource
@@ -1731,7 +1732,7 @@ class LandingRepository internal constructor(
                         !imageByLineAndSource.byline.isNullOrBlank() && !imageByLineAndSource.source.isNullOrBlank() -> {
                             WithImageAndByLine(
                                 imageUrl,
-                                "${imageByLineAndSource.source} / ${imageByLineAndSource.byline}"
+                                "${imageByLineAndSource.byline} / ${imageByLineAndSource.source}"
                             )
                         }
                         else -> WithImage(imageUrl)
