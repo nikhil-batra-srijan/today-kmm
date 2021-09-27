@@ -56,7 +56,8 @@ data class NumberedCarouselItem(
     val imageData: ImageData,
     val timeStamp: TimestampData,
     val mediaTypeData: HeroMediaType,
-    val isBookmarked: Boolean
+    val isBookmarked: Boolean,
+    val byline: ByLineData
 ) : ComponentDetailStoryItem
 
 data class WithoutNumberCarouselItem(
@@ -67,7 +68,8 @@ data class WithoutNumberCarouselItem(
     val imageData: ImageData,
     val timeStamp: TimestampData,
     val mediaTypeData: HeroMediaType,
-    val isBookmarked: Boolean
+    val isBookmarked: Boolean,
+    val byline: ByLineData
 ) : ComponentDetailStoryItem
 
 data class JournalistCarouselItem(
