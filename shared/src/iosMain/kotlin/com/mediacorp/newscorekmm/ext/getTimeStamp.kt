@@ -9,11 +9,13 @@ actual fun String.getTimeStamp(): TimestampData {
     val enUSPosixLocale = NSLocale("en_US_POSIX")
     dateFormatter.locale = enUSPosixLocale
     dateFormatter.calendar = NSCalendar(NSGregorianCalendar)
-    val nsPredicate1 = NSPredicate.predicateWithFormat("SELF MATCHES", "yyyy-MM-dd'T'HH:mm:ssZ".cstr)
-    val nsPredicate2 = NSPredicate.predicateWithFormat("SELF MATCHES", "yyyy-MM-dd'T'HH:mm:ss".cstr)
+    //val nsPredicate1 = NSPredicate.predicateWithFormat("SELF MATCHES", "yyyy-MM-dd'T'HH:mm:ssZ".cstr)
+    //val nsPredicate2 = NSPredicate.predicateWithFormat("SELF MATCHES", "yyyy-MM-dd'T'HH:mm:ss".cstr)
     when {
-        nsPredicate1.evaluateWithObject(this) -> dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        nsPredicate2.evaluateWithObject(this) -> dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        this.matches(Regex("yyyy-MM-dd'T'HH:mm:ssZ")) -> dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        this.matches(Regex("yyyy-MM-dd'T'HH:mm:ss")) -> dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        //nsPredicate1.evaluateWithObject(this) -> dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        //nsPredicate2.evaluateWithObject(this) -> dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         else -> dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     }
     val past = dateFormatter.dateFromString(this)
