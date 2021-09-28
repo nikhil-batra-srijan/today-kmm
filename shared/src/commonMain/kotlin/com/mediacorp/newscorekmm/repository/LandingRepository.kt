@@ -31,7 +31,6 @@ import com.mediacorp.newscorekmm.data.response.component_detail.ImageBylineAndSo
 import com.mediacorp.newscorekmm.data.response.component_detail.StoryResponse
 import com.mediacorp.newscorekmm.data.response.component_detail.VideoResponse
 import com.mediacorp.newscorekmm.ext.CFlow
-import com.mediacorp.newscorekmm.ext.getDateTime
 import com.mediacorp.newscorekmm.ext.getTimeStamp
 import com.mediacorp.newscorekmm.ext.getVideoDuration
 import com.mediacorp.newscorekmm.network.InfiniteScrollService
