@@ -1,11 +1,5 @@
 package com.mediacorp.newscorekmm.ext
-
-import android.annotation.SuppressLint
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.common.*
-import kotlinx.datetime.*
-import kotlin.time.DurationUnit
-import kotlin.time.ExperimentalTime
-import kotlin.time.toDuration
 
 //fun String.getDateTime(): TimestampData {
 //
