@@ -16,7 +16,7 @@ kotlin {
 
     val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
-        /* System.getenv("NATIVE_ARCH")?.startsWith("arm") == true -> ::iosSimulatorArm64*/
+        System.getenv("NATIVE_ARCH")?.startsWith("arm") == true -> ::iosSimulatorArm64
         else -> ::iosX64
     }
 
@@ -29,7 +29,10 @@ kotlin {
 
 //        frameworkName = "shared"
 //        podfile = project.file("../iOSApp/Podfile")
-
+        framework {
+            embedBitcode(org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.BITCODE)
+        }
+        
         xcodeConfigurationToNativeBuildType["development_debug"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["development_release"] =

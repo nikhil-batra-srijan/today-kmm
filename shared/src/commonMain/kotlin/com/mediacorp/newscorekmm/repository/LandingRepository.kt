@@ -29,8 +29,12 @@ import com.mediacorp.newscorekmm.data.domain.dto.landing.landing_page.*
 import com.mediacorp.newscorekmm.data.request.CiaWidgetRequest
 import com.mediacorp.newscorekmm.data.request.WidgetContext
 import com.mediacorp.newscorekmm.data.response.component_detail.*
+import com.mediacorp.newscorekmm.data.response.component_detail.ComponentDetailResponse
+import com.mediacorp.newscorekmm.data.response.component_detail.ImageBylineAndSource
+import com.mediacorp.newscorekmm.data.response.component_detail.StoryResponse
+import com.mediacorp.newscorekmm.data.response.component_detail.VideoResponse
 import com.mediacorp.newscorekmm.ext.CFlow
-import com.mediacorp.newscorekmm.ext.getDateTime
+import com.mediacorp.newscorekmm.ext.getTimeStamp
 import com.mediacorp.newscorekmm.ext.getVideoDuration
 import com.mediacorp.newscorekmm.network.CiaWidgetService
 import com.mediacorp.newscorekmm.network.InfiniteScrollService
@@ -1868,7 +1872,7 @@ class LandingRepository internal constructor(
             if (releaseDate.isNullOrBlank()) {
                 NoTimeStamp
             } else {
-                releaseDate.getDateTime()
+                releaseDate.getTimeStamp()
 
             }
         } catch (e: Exception) {
