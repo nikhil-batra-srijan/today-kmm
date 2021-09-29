@@ -1264,7 +1264,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (1..4) -> {
+                            in (1..3) -> {
                                 StoryItemWithLeftImage(
                                     item.nid,
                                     item.uuid,
@@ -1284,7 +1284,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (5..storyResponse.size) -> {
+                            in (4..storyResponse.size) -> {
                                 StoryItemWithoutLeftImage(
                                     item.nid,
                                     item.uuid,
