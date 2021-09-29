@@ -29,7 +29,10 @@ kotlin {
 
 //        frameworkName = "shared"
 //        podfile = project.file("../iOSApp/Podfile")
-
+        framework {
+            embedBitcode(org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode.BITCODE)
+        }
+        
         xcodeConfigurationToNativeBuildType["development_debug"] =
             org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["development_release"] =
