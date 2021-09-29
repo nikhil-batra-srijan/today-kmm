@@ -36,7 +36,7 @@ class MenuRepository internal constructor(val menuService: MenuService) {
             } else {
                 emit(MenuData.Nothing)
             }
-        }
+        }?:emit(MenuData.Nothing)
     }
     )
 
