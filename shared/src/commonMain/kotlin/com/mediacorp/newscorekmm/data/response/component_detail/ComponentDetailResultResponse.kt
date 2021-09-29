@@ -44,5 +44,9 @@ data class ComponentDetailResultResponse(
     @SerialName("sub_description")
     val subDescription: String? = null,
     @SerialName("html")
-    val htmlString: String? = null
+    val htmlString: String? = null,
+    @SerialName("widget_id")
+    val widgetId: String? = null,
+    @SerialName("mobile_widget_id")
+    val mobileWidgetId: String? = null
 )

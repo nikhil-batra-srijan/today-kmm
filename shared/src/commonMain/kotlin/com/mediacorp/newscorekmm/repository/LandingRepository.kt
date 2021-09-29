@@ -1,10 +1,7 @@
 package com.mediacorp.newscorekmm.repository
 
-import com.mediacorp.newscorekmm.data.response.component_detail.ComponentDetailResponse
-import com.mediacorp.newscorekmm.data.response.component_detail.ImageBylineAndSource
-import com.mediacorp.newscorekmm.data.response.component_detail.StoryResponse
-import com.mediacorp.newscorekmm.data.response.component_detail.VideoResponse
-import com.mediacorp.newscorekmm.data.domain.dto.landing.component.*
+import com.mediacorp.newscorekmm.data.domain.dto.landing.component.ComponentError
+import com.mediacorp.newscorekmm.data.domain.dto.landing.component.LandingPageComponent
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.common.*
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.default_subscription_component.*
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.dl_carousel_journalists_full.CarouselJournalistsFullComponent
@@ -29,101 +26,83 @@ import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.Infinit
 import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollData
 import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollError
 import com.mediacorp.newscorekmm.data.domain.dto.landing.landing_page.*
+import com.mediacorp.newscorekmm.data.request.CiaWidgetRequest
+import com.mediacorp.newscorekmm.data.request.WidgetContext
+import com.mediacorp.newscorekmm.data.response.component_detail.*
 import com.mediacorp.newscorekmm.ext.CFlow
 import com.mediacorp.newscorekmm.ext.getDateTime
 import com.mediacorp.newscorekmm.ext.getVideoDuration
-import com.mediacorp.newscorekmm.ext.toDurationString
+import com.mediacorp.newscorekmm.network.CiaWidgetService
 import com.mediacorp.newscorekmm.network.InfiniteScrollService
 import com.mediacorp.newscorekmm.network.LandingService
 import kotlinx.coroutines.flow.flow
 
 class LandingRepository internal constructor(
     private val landingService: LandingService,
-    private val infiniteScrollService: InfiniteScrollService
+    private val infiniteScrollService: InfiniteScrollService,
+    private val ciaWidgetService: CiaWidgetService
 ) {
 
     private val landingPageStoryList = mutableListOf<StoryResponse>()
 
-    fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> = CFlow(flow {
-        landingPageStoryList.clear()
-        landingService.getLanding(landingPageId)?.result?.let { landingResultResponse ->
-            when {
-                !landingResultResponse.webview.isNullOrBlank() && landingResultResponse.webview.toInt() == 1 -> {
-                    when {
-                        landingResultResponse.url.isNullOrEmpty() -> {
-                            emit(LandingPageError)
-                        }
-                        else -> {
-                            emit(LandingPageWithWebView(landingResultResponse.url))
+    fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> {
+        return CFlow(flow {
+            landingPageStoryList.clear()
+            landingService.getLanding(landingPageId)?.result?.let { landingResultResponse ->
+                when {
+                    !landingResultResponse.webview.isNullOrBlank() && landingResultResponse.webview.toInt() == 1 -> {
+                        when {
+                            landingResultResponse.url.isNullOrEmpty() -> {
+                                emit(LandingPageError)
+                            }
+                            else -> {
+                                emit(LandingPageWithWebView(landingResultResponse.url))
+                            }
                         }
                     }
-                }
-                else -> {
-                    when {
-                        landingResultResponse.layout.isNullOrEmpty() -> {
-                            emit(LandingPageError)
-                        }
-                        else -> {
-                            landingResultResponse.layout.mapNotNull {
-                                it.layoutSection
-                            }.flatMap {
-                                when {
-                                    it.component.isNullOrEmpty() -> emptyList()
-                                    else -> it.component
-                                }
-                            }.map {
-                                it
-                            }.filter {
-                                (it.uuid.isNotEmpty() && it.uuid.isNotBlank())
-                                        && (it.viewMode.isNotEmpty() && it.viewMode.isNotBlank())
-                                        && (it.type.isNotEmpty() && it.type.isNotBlank())
-                                        && it.type != AD_DISPLAY // This filter is temporary and will be removed once ads are implemented
-                            }.let { landingPageData ->
-                                when {
-                                    landingPageData.isNullOrEmpty() -> {
-                                        emit(LandingPageError)
+                    else -> {
+                        when {
+                            landingResultResponse.layout.isNullOrEmpty() -> {
+                                emit(LandingPageError)
+                            }
+                            else -> {
+                                landingResultResponse.layout.mapNotNull {
+                                    it.layoutSection
+                                }.flatMap {
+                                    when {
+                                        it.component.isNullOrEmpty() -> emptyList()
+                                        else -> it.component
                                     }
-                                    else -> {
-                                        landingService.getComponentDetails(
-                                            landingPageData[0].uuid,
-                                            landingPageData[0].viewMode
-                                        )?.let { componentDetailResponse ->
-                                            when (landingPageData[0].type) {
-                                                DYNAMIC_LISTING -> {
-                                                    val deDupedList = applyDedDupeLogic(
-                                                        componentDetailResponse.result?.storyResponse,
-                                                        componentDetailResponse.result?.fieldExcludeDedupe?.toInt(),
-                                                        componentDetailResponse.result?.fieldCount,
-                                                        componentDetailResponse.result?.fieldOffset
-                                                    )
-                                                    when {
-                                                        deDupedList.isEmpty() -> {
-                                                            LandingPageNative(
-                                                                emptyList(),
-                                                                landingPageData.map {
-                                                                    LazyLoadComponent(
-                                                                        it.uuid,
-                                                                        it.viewMode,
-                                                                        it.labelView
-                                                                    )
-                                                                }.drop(1)
-                                                            )
-                                                        }
-                                                        else -> {
-                                                            landingPageStoryList.addAll(deDupedList)
-                                                            emit(
+                                }.map {
+                                    it
+                                }.filter {
+                                    (it.uuid.isNotEmpty() && it.uuid.isNotBlank())
+                                            && (it.viewMode.isNotEmpty() && it.viewMode.isNotBlank())
+                                            && (it.type.isNotEmpty() && it.type.isNotBlank())
+                                            && it.type != AD_DISPLAY // This filter is temporary and will be removed once ads are implemented
+                                }.let { landingPageData ->
+                                    when {
+                                        landingPageData.isNullOrEmpty() -> {
+                                            emit(LandingPageError)
+                                        }
+                                        else -> {
+                                            landingService.getComponentDetails(
+                                                landingPageData[0].uuid,
+                                                landingPageData[0].viewMode
+                                            )?.let { componentDetailResponse ->
+                                                when (landingPageData[0].type) {
+                                                    DYNAMIC_LISTING -> {
+                                                        val deDupedList = applyDedDupeLogic(
+                                                            componentDetailResponse.result?.storyResponse,
+                                                            componentDetailResponse.result?.fieldExcludeDedupe?.toInt(),
+                                                            componentDetailResponse.result?.fieldCount,
+                                                            componentDetailResponse.result?.fieldOffset
+                                                        )
+                                                        when {
+                                                            deDupedList.isEmpty() -> {
                                                                 LandingPageNative(
-                                                                    listOf(
-                                                                        getLandingPageComponent(
-                                                                            componentDetailResponse.copy(
-                                                                                result = componentDetailResponse.result?.copy(
-                                                                                    storyResponse = deDupedList
-                                                                                )
-                                                                            ),
-                                                                            landingPageData[0].viewMode,
-                                                                            landingPageData[0].labelView
-                                                                        )
-                                                                    ), landingPageData.map {
+                                                                    emptyList(),
+                                                                    landingPageData.map {
                                                                         LazyLoadComponent(
                                                                             it.uuid,
                                                                             it.viewMode,
@@ -131,57 +110,83 @@ class LandingRepository internal constructor(
                                                                         )
                                                                     }.drop(1)
                                                                 )
-                                                            )
+                                                            }
+                                                            else -> {
+                                                                landingPageStoryList.addAll(
+                                                                    deDupedList
+                                                                )
+                                                                emit(
+                                                                    LandingPageNative(
+                                                                        listOf(
+                                                                            getLandingPageComponent(
+                                                                                componentDetailResponse.copy(
+                                                                                    result = componentDetailResponse.result?.copy(
+                                                                                        storyResponse = deDupedList
+                                                                                    )
+                                                                                ),
+                                                                                landingPageData[0].viewMode,
+                                                                                landingPageData[0].labelView
+                                                                            )
+                                                                        ), landingPageData.map {
+                                                                            LazyLoadComponent(
+                                                                                it.uuid,
+                                                                                it.viewMode,
+                                                                                it.labelView
+                                                                            )
+                                                                        }.drop(1)
+                                                                    )
+                                                                )
 
+                                                            }
                                                         }
                                                     }
-                                                }
-                                                else -> {
-                                                    emit(
-                                                        LandingPageNative(
-                                                            listOf(
-                                                                getLandingPageComponent(
-                                                                    componentDetailResponse,
-                                                                    landingPageData[0].viewMode,
-                                                                    landingPageData[0].labelView
-                                                                )
-                                                            ), landingPageData.map {
-                                                                LazyLoadComponent(
-                                                                    it.uuid,
-                                                                    it.viewMode,
-                                                                    it.labelView
-                                                                )
-                                                            }.drop(1)
+                                                    else -> {
+                                                        emit(
+                                                            LandingPageNative(
+                                                                listOf(
+                                                                    getLandingPageComponent(
+                                                                        componentDetailResponse,
+                                                                        landingPageData[0].viewMode,
+                                                                        landingPageData[0].labelView
+                                                                    )
+                                                                ), landingPageData.map {
+                                                                    LazyLoadComponent(
+                                                                        it.uuid,
+                                                                        it.viewMode,
+                                                                        it.labelView
+                                                                    )
+                                                                }.drop(1)
+                                                            )
                                                         )
-                                                    )
 
+                                                    }
                                                 }
-                                            }
 
-                                        } ?: emit(
-                                            LandingPageNative(
-                                                emptyList(),
-                                                landingPageData.map {
-                                                    LazyLoadComponent(
-                                                        it.uuid,
-                                                        it.viewMode,
-                                                        it.labelView
-                                                    )
-                                                }.drop(1)
+                                            } ?: emit(
+                                                LandingPageNative(
+                                                    emptyList(),
+                                                    landingPageData.map {
+                                                        LazyLoadComponent(
+                                                            it.uuid,
+                                                            it.viewMode,
+                                                            it.labelView
+                                                        )
+                                                    }.drop(1)
+                                                )
                                             )
-                                        )
+                                        }
                                     }
                                 }
+
                             }
-
                         }
+
                     }
-
                 }
-            }
 
-        } ?: emit(LandingPageError)
-    })
+            } ?: emit(LandingPageError)
+        })
+    }
 
     fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): CFlow<LandingPageComponent> =
         CFlow(flow {
@@ -262,7 +267,7 @@ class LandingRepository internal constructor(
     })
 
     @Suppress("UNCHECKED_CAST")
-    private fun getLandingPageComponent(
+    private suspend fun getLandingPageComponent(
         componentResponse: ComponentDetailResponse,
         viewMode: String,
         labelDisplay: Boolean
@@ -716,22 +721,80 @@ class LandingRepository internal constructor(
                 }
             }
 
-            //TODO write implementation for CIA widgets
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
-                    && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.numberedCarousel -> ComponentError
+            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget ->
+                fetchCiaWidget(
+                    lazyLoadComponent = LazyLoadComponent(
+                        compResult.uuid,
+                        viewMode,
+                        labelDisplay
+                    ),
+                    ciaWidgetRequest = CiaWidgetRequest(
+                        id = compResult.widgetId,
+                        context = WidgetContext(
+                            meid = "e4b174a2-2008-4e90-80ca-9e4055e76b4c",
+                            site = "tdy",
+                            cxenseId = "1135139135324707697",
+                            url = "/",
+                            contentId = ""
+                        )
+                    )
+                )
+            when (detectViewModeTypeFromViewMode(viewMode)) {
+                ViewModeType.numberedCarousel -> ComponentError
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
-                    && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.carousel -> ComponentError
+                ViewModeType.carousel -> ComponentError
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
-                    && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.cLeft5s5p -> ComponentError
+                ViewModeType.cLeft5s5p -> ComponentError
+
+                else -> ComponentError
+            }
+
             else -> ComponentError
         }
     }
 
     fun clearLandingPageStoryList() {
         landingPageStoryList.clear()
+    }
+
+    suspend fun fetchCiaWidget(
+        lazyLoadComponent: LazyLoadComponent,
+        ciaWidgetRequest: CiaWidgetRequest
+    ): LandingPageComponent {
+        return ciaWidgetService.getCiaComponent(
+            lazyLoadComponent.uuid,
+            lazyLoadComponent.viewMode,
+            ciaWidgetRequest.id,
+            ciaWidgetRequest.context.meid,
+            ciaWidgetRequest.context.contentId,
+            ciaWidgetRequest.context.cxenseId,
+            ciaWidgetRequest.context.site,
+            ciaWidgetRequest.context.url
+        )?.data?.items?.let { stories ->
+            interpretMandatoryStoryList(stories) { pureList ->
+                CiaComponent(
+                    uuid = lazyLoadComponent.uuid,
+                    isDarkMode = lazyLoadComponent.labelDisplay,
+                    title = ,
+                    ciaStoryList = pureList.map { interpretCIAStoryItem(it) }
+                )
+            }
+        } ?: ComponentError
+    }
+
+    private fun interpretCIAStoryItem(item: CiaWidgetResponse.WidgetData.Item): CiaStoryItem {
+        if (!item.title.isNullOrBlank() && !item.id.isNullOrBlank()
+        ) {
+            CiaStoryItem.WithCiaStoryItem(
+                title = item.title,
+                id = item.id,
+                contentId = item.contentId,
+                date = item.publishDate
+            )
+        } else {
+            CiaStoryItem.None
+        }
     }
 
 
@@ -871,7 +934,7 @@ class LandingRepository internal constructor(
     ): List<ComponentDetailStoryItem> {
         return when (viewModeType) {
             ViewModeType.aLeft5s5p -> {
-                storyResponse.mapIndexed { index, item ->
+                storyResponse.mapIndexed { index, item: StoryResponse ->
                     if (!item.nid.isNullOrBlank() && !item.uuid.isNullOrBlank() && !item.absoluteUrl.isNullOrBlank() && !item.title.isNullOrBlank()) {
                         when (index) {
                             0 -> {
