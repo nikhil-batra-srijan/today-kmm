@@ -42,8 +42,6 @@ class LandingRepository internal constructor(
     private val infiniteScrollService: InfiniteScrollService
 ) {
 
-    private val landingPageStoryList = mutableListOf<StoryResponse>()
-
     fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> = CFlow(flow {
         landingService.getLanding(landingPageId)?.result?.let { landingResultResponse ->
             when {
