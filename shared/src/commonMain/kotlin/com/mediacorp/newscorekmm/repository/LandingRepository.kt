@@ -927,7 +927,7 @@ class LandingRepository internal constructor(
                 storyResponse.mapIndexed { index, item ->
                     if (!item.nid.isNullOrBlank() && !item.uuid.isNullOrBlank() && !item.absoluteUrl.isNullOrBlank() && !item.title.isNullOrBlank()) {
                         when (index) {
-                            in (0..storyResponse.size) -> {
+                            0 -> {
                                 FeaturedStoryItem(
                                     item.nid,
                                     item.uuid,
@@ -949,7 +949,26 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-
+                            in (1..storyResponse.size) -> {
+                                StoryItemWithLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemImage(
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
                             else -> ComponentDetailStoryItemError
                         }
                     } else {
@@ -1107,7 +1126,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (1..3) -> {
+                            in (1..4) -> {
                                 StoryItemWithLeftImage(
                                     item.nid,
                                     item.uuid,
@@ -1127,7 +1146,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (4..storyResponse.size) -> {
+                            in (5..storyResponse.size) -> {
                                 StoryItemWithoutLeftImage(
                                     item.nid,
                                     item.uuid,
@@ -1245,7 +1264,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (1..4) -> {
+                            in (1..3) -> {
                                 StoryItemWithLeftImage(
                                     item.nid,
                                     item.uuid,
@@ -1265,7 +1284,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (5..storyResponse.size) -> {
+                            in (4..storyResponse.size) -> {
                                 StoryItemWithoutLeftImage(
                                     item.nid,
                                     item.uuid,
