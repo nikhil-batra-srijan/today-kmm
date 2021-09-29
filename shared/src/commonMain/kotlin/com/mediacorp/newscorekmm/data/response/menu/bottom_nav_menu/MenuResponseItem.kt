@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BottomNavMenuResponseItem(
+data class MenuResponseItem(
     @SerialName("absolute_url")
     val absoluteUrl: String?,
     @SerialName("alias")
