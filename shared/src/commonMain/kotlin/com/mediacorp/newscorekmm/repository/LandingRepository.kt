@@ -45,7 +45,6 @@ class LandingRepository internal constructor(
     private val landingPageStoryList = mutableListOf<StoryResponse>()
 
     fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> = CFlow(flow {
-        landingPageStoryList.clear()
         landingService.getLanding(landingPageId)?.result?.let { landingResultResponse ->
             when {
                 !landingResultResponse.webview.isNullOrBlank() && landingResultResponse.webview.toInt() == 1 -> {
@@ -94,7 +93,8 @@ class LandingRepository internal constructor(
                                                         componentDetailResponse.result?.storyResponse,
                                                         componentDetailResponse.result?.fieldExcludeDedupe?.toInt(),
                                                         componentDetailResponse.result?.fieldCount,
-                                                        componentDetailResponse.result?.fieldOffset
+                                                        componentDetailResponse.result?.fieldOffset,
+                                                        componentDetailResponse.result?.storyResponse?.mapNotNull { it.nid }
                                                     )
                                                     when {
                                                         deDupedList.isEmpty() -> {
@@ -110,7 +110,6 @@ class LandingRepository internal constructor(
                                                             )
                                                         }
                                                         else -> {
-                                                            landingPageStoryList.addAll(deDupedList)
                                                             emit(
                                                                 LandingPageNative(
                                                                     listOf(
@@ -183,7 +182,10 @@ class LandingRepository internal constructor(
         } ?: emit(LandingPageError)
     })
 
-    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): CFlow<LandingPageComponent> =
+    fun fetchComponentDetail(
+        lazyLoadComponent: LazyLoadComponent,
+        existingIdList: List<String>
+    ): CFlow<LandingPageComponent> =
         CFlow(flow {
             landingService.getComponentDetails(lazyLoadComponent.uuid, lazyLoadComponent.viewMode)
                 ?.let { componentDetailResponse ->
@@ -198,7 +200,8 @@ class LandingRepository internal constructor(
                                                     componentDetailResponse.result.storyResponse,
                                                     componentDetailResponse.result.fieldExcludeDedupe?.toInt(),
                                                     componentDetailResponse.result.fieldCount,
-                                                    componentDetailResponse.result.fieldOffset
+                                                    componentDetailResponse.result.fieldOffset,
+                                                    existingIdList
                                                 )
                                             )
                                         ),
@@ -728,10 +731,6 @@ class LandingRepository internal constructor(
                     && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.cLeft5s5p -> ComponentError
             else -> ComponentError
         }
-    }
-
-    fun clearLandingPageStoryList() {
-        landingPageStoryList.clear()
     }
 
 
@@ -1849,30 +1848,29 @@ class LandingRepository internal constructor(
         storyResponse: List<StoryResponse>?,
         excludeDeDupe: Int?,
         fieldCount: Int?,
-        fieldOffset: Int?
+        fieldOffset: Int?,
+        existingIdList: List<String>?
     ): List<StoryResponse> {
         if (storyResponse.isNullOrEmpty()) {
             return emptyList()
         }
         val excludeDeDupeBool: Boolean = excludeDeDupe == 1
-        if (landingPageStoryList.isNotEmpty()) {
+        if (!existingIdList.isNullOrEmpty()) {
             val list = storyResponse.filter {
                 if (excludeDeDupeBool) {
                     true
                 } else {
-                    it.nid !in landingPageStoryList.map { item -> item.nid }
+                    it.nid !in existingIdList
                 }
             }
             return if (fieldCount != null && fieldCount > 0) {
                 if (list.isNotEmpty() && list.size >= fieldCount) {
                     val newList = list.take(fieldCount)
-                    landingPageStoryList.addAll(newList)
                     newList
                 } else {
                     list
                 }
             } else {
-                landingPageStoryList.addAll(list)
                 list
             }
         } else {
@@ -1880,13 +1878,11 @@ class LandingRepository internal constructor(
             return if (fieldCount != null && fieldCount > 0) {
                 if (newStoryResponse.isNotEmpty() && newStoryResponse.size >= fieldCount) {
                     val newList = newStoryResponse.take(fieldCount)
-                    landingPageStoryList.addAll(newList)
                     newList
                 } else {
                     newStoryResponse
                 }
             } else {
-                landingPageStoryList.addAll(newStoryResponse)
                 newStoryResponse
             }
         }
