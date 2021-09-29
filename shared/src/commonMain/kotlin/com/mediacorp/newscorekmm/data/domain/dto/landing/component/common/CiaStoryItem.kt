@@ -2,24 +2,40 @@ package com.mediacorp.newscorekmm.data.domain.dto.landing.component.common
 
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.LandingPageComponent
 
-data class CiaComponent(
+data class CiaComponentCarousel(
     val uuid: String,
     val title: TitleData,
-    val ctaData: CtaData,
+    val subTitle:SubTitleData,
     val ciaStoryList: List<CiaStoryItem>,
     val isDarkMode: Boolean = false
-):LandingPageComponent
+) : LandingPageComponent
+
+data class CiaComponentNumberedCarousel(
+    val uuid: String,
+    val title: TitleData,
+    val ciaStoryList: List<CiaStoryItem>,
+    val isDarkMode: Boolean = false
+) : LandingPageComponent
+
+data class CiaComponentFiveStoriesFiveFivePics(
+    val uuid: String,
+    val title: TitleData,
+    val ciaStoryList: List<CiaStoryItem>,
+    val isDarkMode: Boolean = false
+) : LandingPageComponent
+
+
 
 sealed class CiaStoryItem {
     data class WithCiaStoryItem(
         val title: String,
         val id: String,
-        val contentId: String,
-        val url: String,
+        val contentId: String?,
+        val url: String?,
         val imageUrl: ImageData,
-        val clickTracker: String,
-        val date: String,
-        val duration: DurationType
+        val clickTracker: String?,
+        val date: TimestampData
     ) : CiaStoryItem()
+
     object None : CiaStoryItem()
 }

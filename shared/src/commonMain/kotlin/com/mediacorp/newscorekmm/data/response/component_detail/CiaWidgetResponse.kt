@@ -8,10 +8,10 @@ data class CiaWidgetResponse(
     val data: WidgetData = WidgetData()
 ) {
     data class WidgetData(
-        @SerialName("title")
-        val title: String? = null,
+        @SerialName("layoutConfig")
+        val layoutConfig: LayoutConfig = LayoutConfig(),
         @SerialName("items")
-    val items: List<Item> = listOf()
+        val items: List<Item> = listOf()
     )
     {
         data class Item(
@@ -41,4 +41,8 @@ data class CiaWidgetResponse(
             val type: String? = null
         )
     }
+    data class LayoutConfig(
+        @SerialName("title")
+        val title: String? = null
+    )
 }

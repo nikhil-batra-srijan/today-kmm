@@ -722,7 +722,7 @@ class LandingRepository internal constructor(
             }
 
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget ->
+            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget -> {
                 fetchCiaWidget(
                     lazyLoadComponent = LazyLoadComponent(
                         compResult.uuid,
@@ -738,16 +738,9 @@ class LandingRepository internal constructor(
                             url = "/",
                             contentId = ""
                         )
-                    )
+                    ),
+                    detectViewModeTypeFromViewMode(viewMode)
                 )
-            when (detectViewModeTypeFromViewMode(viewMode)) {
-                ViewModeType.numberedCarousel -> ComponentError
-
-                ViewModeType.carousel -> ComponentError
-
-                ViewModeType.cLeft5s5p -> ComponentError
-
-                else -> ComponentError
             }
 
             else -> ComponentError
@@ -758,9 +751,10 @@ class LandingRepository internal constructor(
         landingPageStoryList.clear()
     }
 
-    suspend fun fetchCiaWidget(
+    private suspend fun fetchCiaWidget(
         lazyLoadComponent: LazyLoadComponent,
-        ciaWidgetRequest: CiaWidgetRequest
+        ciaWidgetRequest: CiaWidgetRequest,
+        viewMode: ViewModeType
     ): LandingPageComponent {
         return ciaWidgetService.getCiaComponent(
             lazyLoadComponent.uuid,
@@ -771,26 +765,68 @@ class LandingRepository internal constructor(
             ciaWidgetRequest.context.cxenseId,
             ciaWidgetRequest.context.site,
             ciaWidgetRequest.context.url
-        )?.data?.items?.let { stories ->
-            interpretMandatoryStoryList(stories) { pureList ->
-                CiaComponent(
-                    uuid = lazyLoadComponent.uuid,
-                    isDarkMode = lazyLoadComponent.labelDisplay,
-                    title = ,
-                    ciaStoryList = pureList.map { interpretCIAStoryItem(it) }
-                )
+        )?.data?.let { data: CiaWidgetResponse.WidgetData ->
+            interpretMandatoryStoryList(data.items) { pureList ->
+                interpretMandatoryStoryList(
+                    pureList
+                        .map { interpretCIAStoryItem(it) }
+                        .filter { it !is CiaStoryItem.None }
+                ) { pureCiaList ->
+                    when (viewMode) {
+                        ViewModeType.numberedCarousel -> {
+                            CiaComponentNumberedCarousel(
+                                uuid = lazyLoadComponent.uuid,
+                                isDarkMode = lazyLoadComponent.labelDisplay,
+                                title = interpretTitle(
+                                    lazyLoadComponent.labelDisplay,
+                                    data.layoutConfig.title
+                                ),
+                                ciaStoryList = pureCiaList
+                            )
+                        }
+
+                        ViewModeType.carousel -> {
+                            CiaComponentCarousel(
+                                uuid = lazyLoadComponent.uuid,
+                                isDarkMode = lazyLoadComponent.labelDisplay,
+                                title = interpretTitle(
+                                    lazyLoadComponent.labelDisplay,
+                                    data.layoutConfig.title
+                                ),
+                                subTitle = WithoutSubTitle,
+                                ciaStoryList = pureCiaList
+                            )
+                        }
+
+                        ViewModeType.cLeft5s5p -> {
+                            CiaComponentFiveStoriesFiveFivePics(
+                                uuid = lazyLoadComponent.uuid,
+                                isDarkMode = lazyLoadComponent.labelDisplay,
+                                title = interpretTitle(
+                                    lazyLoadComponent.labelDisplay,
+                                    data.layoutConfig.title
+                                ),
+                                ciaStoryList = pureCiaList
+                            )
+                        }
+                        else -> ComponentError
+                    }
+                }
             }
         } ?: ComponentError
     }
 
     private fun interpretCIAStoryItem(item: CiaWidgetResponse.WidgetData.Item): CiaStoryItem {
-        if (!item.title.isNullOrBlank() && !item.id.isNullOrBlank()
+        return if (!item.title.isNullOrBlank() && !item.id.isNullOrBlank()
         ) {
             CiaStoryItem.WithCiaStoryItem(
                 title = item.title,
                 id = item.id,
                 contentId = item.contentId,
-                date = item.publishDate
+                date = interpretTimeStampData(item.publishDate),
+                clickTracker = item.clickTracker,
+                imageUrl = interpretStoryItemImage(item.imageUrl, null, false),
+                url = item.url
             )
         } else {
             CiaStoryItem.None
