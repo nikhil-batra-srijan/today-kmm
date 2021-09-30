@@ -263,7 +263,7 @@ class LandingRepository internal constructor(
     })
 
     @Suppress("UNCHECKED_CAST")
-    private fun getLandingPageComponent(
+    private suspend fun getLandingPageComponent(
         componentResponse: ComponentDetailResponse,
         viewMode: String,
         labelDisplay: Boolean
@@ -725,7 +725,7 @@ class LandingRepository internal constructor(
 
             //TODO write implementation for CIA widgets
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget -> {
+            componentType == ComponentType.ciaWidget -> {
                 fetchCiaWidget(
                     lazyLoadComponent = LazyLoadComponent(
                         compResult.uuid,
@@ -742,15 +742,15 @@ class LandingRepository internal constructor(
                             contentId = ""
                         )
                     ),
-                    detectViewModeTypeFromViewMode(viewMode)
+                    detectedViewMode
                 )
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
-                    && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.carousel -> ComponentError
+            componentType == ComponentType.ciaWidget
+                    && detectedViewMode == ViewModeType.carousel -> ComponentError
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
-                    && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.cLeft5s5p -> ComponentError
+            componentType == ComponentType.ciaWidget
+                    && detectedViewMode == ViewModeType.cLeft5s5p -> ComponentError
             else -> ComponentError
         }
     }
