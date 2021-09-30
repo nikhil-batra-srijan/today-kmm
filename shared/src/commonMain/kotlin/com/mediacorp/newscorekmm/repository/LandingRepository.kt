@@ -94,21 +94,21 @@ class LandingRepository internal constructor(
                                                         componentDetailResponse.result?.fieldOffset,
                                                         componentDetailResponse.result?.storyResponse?.mapNotNull { it.nid }
                                                     )
-                                                    when {
-                                                        deDupedList.isEmpty() -> {
-                                                            LandingPageNative(
-                                                                emptyList(),
-                                                                landingPageData.map {
-                                                                    LazyLoadComponent(
-                                                                        it.uuid,
-                                                                        it.viewMode,
-                                                                        it.labelView
-                                                                    )
-                                                                }.drop(1)
-                                                            )
-                                                        }
-                                                        else -> {
-                                                            emit(
+                                                    emit(
+                                                        when {
+                                                            deDupedList.isEmpty() -> {
+                                                                LandingPageNative(
+                                                                    emptyList(),
+                                                                    landingPageData.map {
+                                                                        LazyLoadComponent(
+                                                                            it.uuid,
+                                                                            it.viewMode,
+                                                                            it.labelView
+                                                                        )
+                                                                    }.drop(1)
+                                                                )
+                                                            }
+                                                            else -> {
                                                                 LandingPageNative(
                                                                     listOf(
                                                                         getLandingPageComponent(
@@ -128,10 +128,9 @@ class LandingRepository internal constructor(
                                                                         )
                                                                     }.drop(1)
                                                                 )
-                                                            )
-
+                                                            }
                                                         }
-                                                    }
+                                                    )
                                                 }
                                                 else -> {
                                                     emit(
