@@ -26,20 +26,21 @@ import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.Infinit
 import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollData
 import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollError
 import com.mediacorp.newscorekmm.data.domain.dto.landing.landing_page.*
-import com.mediacorp.newscorekmm.data.response.component_detail.ComponentDetailResponse
-import com.mediacorp.newscorekmm.data.response.component_detail.ImageBylineAndSource
-import com.mediacorp.newscorekmm.data.response.component_detail.StoryResponse
-import com.mediacorp.newscorekmm.data.response.component_detail.VideoResponse
+import com.mediacorp.newscorekmm.data.request.CiaWidgetRequest
+import com.mediacorp.newscorekmm.data.request.WidgetContext
+import com.mediacorp.newscorekmm.data.response.component_detail.*
 import com.mediacorp.newscorekmm.ext.CFlow
 import com.mediacorp.newscorekmm.ext.getTimeStamp
 import com.mediacorp.newscorekmm.ext.getVideoDuration
+import com.mediacorp.newscorekmm.network.CiaWidgetService
 import com.mediacorp.newscorekmm.network.InfiniteScrollService
 import com.mediacorp.newscorekmm.network.LandingService
 import kotlinx.coroutines.flow.flow
 
 class LandingRepository internal constructor(
     private val landingService: LandingService,
-    private val infiniteScrollService: InfiniteScrollService
+    private val infiniteScrollService: InfiniteScrollService,
+    private val ciaWidgetService: CiaWidgetService
 ) {
 
     fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> = CFlow(flow {
@@ -179,6 +180,7 @@ class LandingRepository internal constructor(
         } ?: emit(LandingPageError)
     })
 
+
     fun fetchComponentDetail(
         lazyLoadComponent: LazyLoadComponent,
         existingIdList: List<String>
@@ -262,7 +264,7 @@ class LandingRepository internal constructor(
     })
 
     @Suppress("UNCHECKED_CAST")
-    private fun getLandingPageComponent(
+    private suspend fun getLandingPageComponent(
         componentResponse: ComponentDetailResponse,
         viewMode: String,
         labelDisplay: Boolean
@@ -716,17 +718,112 @@ class LandingRepository internal constructor(
                 }
             }
 
-            //TODO write implementation for CIA widgets
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
-                    && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.numberedCarousel -> ComponentError
+            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget -> {
+                fetchCiaWidget(
+                    lazyLoadComponent = LazyLoadComponent(
+                        compResult.uuid,
+                        viewMode,
+                        labelDisplay
+                    ),
+                    ciaWidgetRequest = CiaWidgetRequest(
+                        id = compResult.widgetId,
+                        context = WidgetContext(
+                            meid = "e4b174a2-2008-4e90-80ca-9e4055e76b4c",
+                            site = "tdy",
+                            cxenseId = "1135139135324707697",
+                            url = "/",
+                            contentId = ""
+                        )
+                    ),
+                    detectViewModeTypeFromViewMode(viewMode)
+                )
+            }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
-                    && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.carousel -> ComponentError
-
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
-                    && detectViewModeTypeFromViewMode(viewMode) == ViewModeType.cLeft5s5p -> ComponentError
             else -> ComponentError
+        }
+    }
+
+
+    private suspend fun fetchCiaWidget(
+        lazyLoadComponent: LazyLoadComponent,
+        ciaWidgetRequest: CiaWidgetRequest,
+        viewMode: ViewModeType
+    ): LandingPageComponent {
+        return ciaWidgetService.getCiaComponent(
+            lazyLoadComponent.uuid,
+            lazyLoadComponent.viewMode,
+            ciaWidgetRequest.id,
+            ciaWidgetRequest.context.meid,
+            ciaWidgetRequest.context.contentId,
+            ciaWidgetRequest.context.cxenseId,
+            ciaWidgetRequest.context.site,
+            ciaWidgetRequest.context.url
+        )?.data?.let { data: CiaWidgetResponse.WidgetData ->
+            interpretMandatoryStoryList(data.items) { pureList ->
+                interpretMandatoryStoryList(
+                    pureList
+                        .map { interpretCIAStoryItem(it) }
+                        .filter { it !is CiaStoryItem.None }
+                ) { pureCiaList ->
+                    when (viewMode) {
+                        ViewModeType.numberedCarousel -> {
+                            CiaComponentNumberedCarousel(
+                                uuid = lazyLoadComponent.uuid,
+                                isDarkMode = lazyLoadComponent.labelDisplay,
+                                title = interpretTitle(
+                                    lazyLoadComponent.labelDisplay,
+                                    data.layoutConfig.title
+                                ),
+                                ciaStoryList = pureCiaList
+                            )
+                        }
+
+                        ViewModeType.carousel -> {
+                            CiaComponentCarousel(
+                                uuid = lazyLoadComponent.uuid,
+                                isDarkMode = lazyLoadComponent.labelDisplay,
+                                title = interpretTitle(
+                                    lazyLoadComponent.labelDisplay,
+                                    data.layoutConfig.title
+                                ),
+                                ciaStoryList = pureCiaList
+                            )
+                        }
+
+                        ViewModeType.cLeft5s5p -> {
+                            CiaComponentFiveStoriesFiveFivePics(
+                                uuid = lazyLoadComponent.uuid,
+                                isDarkMode = lazyLoadComponent.labelDisplay,
+                                title = interpretTitle(
+                                    lazyLoadComponent.labelDisplay,
+                                    data.layoutConfig.title
+                                ),
+                                ciaStoryList = pureCiaList
+                            )
+                        }
+                        else -> ComponentError
+                    }
+                }
+            }
+        } ?: ComponentError
+    }
+
+    private fun interpretCIAStoryItem(item: CiaWidgetResponse.WidgetData.Item): CiaStoryItem {
+        return if (!item.title.isNullOrBlank() && !item.id.isNullOrBlank() && !item.url.isNullOrBlank()
+            && !item.clickTracker.isNullOrBlank() && !item.contentId.isNullOrBlank()
+        ) {
+            CiaStoryItem.WithCiaStoryItem(
+                title = item.title,
+                id = item.id,
+                contentId = item.contentId,
+                date = interpretTimeStampData(item.publishDate),
+                clickTracker = item.clickTracker,
+                imageUrl = interpretStoryItemImage(item.imageUrl, null, false),
+                url = item.url
+            )
+        } else {
+            CiaStoryItem.None
         }
     }
 
@@ -1895,6 +1992,5 @@ class LandingRepository internal constructor(
         const val GALLERY_MEDIA_TYPE = "gallery"
     }
 }
-
 
 

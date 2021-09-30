@@ -16,7 +16,6 @@ data class FeaturedStoryItem(
 
 ) : ComponentDetailStoryItem
 
-
 data class StoryItemWithLeftImage(
     val nid: String,
     val uuid: String,
