@@ -1,6 +1,5 @@
 package com.mediacorp.newscorekmm.data.response.landing
 
-import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,7 +20,7 @@ data class ComponentResponse(
     @SerialName("label_display")
     val labelDisplay: String? = null,
     @SerialName("label_view")
-    val labelView: Boolean,
+    val labelView: Boolean = false,
     @SerialName("mobile_widget_id")
     val mobileWidgetId: String? = null,
     @SerialName("placeholder")

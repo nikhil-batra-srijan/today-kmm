@@ -9,9 +9,9 @@ class LandingService(private val baseUrl: String) {
 
     suspend fun getLanding(landingPageId: String): LandingResponse? {
         return try {
-            CommonApiClient.httpClient.get("$baseUrl$LANDING_API$landingPageId")
+            CommonApiClient.httpClient.get("")
         } catch (e: Exception) {
-           print("apiException:"+e.message)
+           print("apiException while getting landing response for baseUrl = $baseUrl$LANDING_API$landingPageId ===>:"+e.message)
             null
         }
     }
@@ -20,6 +20,7 @@ class LandingService(private val baseUrl: String) {
         return try {
             CommonApiClient.httpClient.get("$baseUrl$COMPONENT_API$uuid?viewMode=$viewMode")
         } catch (e: Exception) {
+            print("apiException while getting component with viewmode = ${viewMode} ====>"+e.message)
             null
         }
     }

@@ -28,6 +28,8 @@ sealed class ViewModeType {
 fun detectViewModeTypeFromViewMode(viewMode: String): ViewModeType {
     return when (viewMode) {
         "middle_9s_5p" -> ViewModeType.middle9s5p
+        "top_stories_primary" -> ViewModeType.middle9s5p
+        "top_stories_secondary" -> ViewModeType.middle9s5p
         "full" -> ViewModeType.full
         "left_7s_5p" -> ViewModeType.left7s5p
         "minute_full_width" -> ViewModeType.minuteFullWidth
