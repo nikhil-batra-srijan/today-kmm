@@ -1,19 +1,20 @@
 package com.mediacorp.newscorekmm.data.response.component_detail
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class CiaWidgetResponse(
-    @SerialName("data")
     val data: WidgetData = WidgetData()
 ) {
+    @Serializable
     data class WidgetData(
         @SerialName("layoutConfig")
         val layoutConfig: LayoutConfig = LayoutConfig(),
         @SerialName("items")
         val items: List<Item> = listOf()
-    )
-    {
+    ) {
+        @Serializable
         data class Item(
             @SerialName("id")
             val id: String? = null,
@@ -41,6 +42,8 @@ data class CiaWidgetResponse(
             val type: String? = null
         )
     }
+
+    @Serializable
     data class LayoutConfig(
         @SerialName("title")
         val title: String? = null

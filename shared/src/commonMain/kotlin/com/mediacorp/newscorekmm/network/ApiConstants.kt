@@ -7,9 +7,9 @@ const val COMPONENT_API = "/api/v2/component/"
 const val INFINITE_SCROLL_API = "/api/v1/infinitelisting/"
 const val CIA_WIDGET_API = "/api/v1/loadWidget"
 
-object EndPoints{
-    object Menu{
-        const val BOTTOM_MENU="mobile-footer-menu"
-        const val TOP_MENU="secondary-menu"
+object EndPoints {
+    object Menu {
+        const val BOTTOM_MENU = "mobile-footer-menu"
+        const val TOP_MENU = "secondary-menu"
     }
 }

@@ -5,8 +5,12 @@ import com.mediacorp.newscorekmm.data.request.CiaWidgetRequest
 import com.mediacorp.newscorekmm.data.request.WidgetContext
 import com.mediacorp.newscorekmm.data.response.component_detail.CiaWidgetResponse
 import io.ktor.client.request.*
+import io.ktor.http.*
 
-class CiaWidgetService(private val token: String,private val baseUrl: String="https://recommend-zoom.mediacorp.sg") {
+class CiaWidgetService(
+    private val token: String,
+    private val baseUrl: String = "https://recommend-zoom.mediacorp.sg"
+) {
     suspend fun getCiaComponent(
         uuid: String,
         viewMode: String,
@@ -20,6 +24,7 @@ class CiaWidgetService(private val token: String,private val baseUrl: String="ht
         return try {
             CommonApiClient.httpClient.post("$baseUrl$CIA_WIDGET_API") {
                 parameter("token", token)
+                contentType(ContentType.Application.Json)
                 body = CiaWidgetRequest(
                     id = id,
                     context = WidgetContext(
