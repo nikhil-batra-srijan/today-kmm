@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Attributes(
     @SerialName("class")
-    val classX: List<String>
+    val classX: List<String>?=null
 )
