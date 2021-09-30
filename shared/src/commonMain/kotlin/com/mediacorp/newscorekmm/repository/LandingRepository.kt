@@ -42,10 +42,7 @@ class LandingRepository internal constructor(
     private val infiniteScrollService: InfiniteScrollService
 ) {
 
-    private val landingPageStoryList = mutableListOf<StoryResponse>()
-
     fun fetchLandingPage(landingPageId: String): CFlow<LandingPageData> = CFlow(flow {
-        landingPageStoryList.clear()
         landingService.getLanding(landingPageId)?.result?.let { landingResultResponse ->
             when {
                 !landingResultResponse.webview.isNullOrBlank() && landingResultResponse.webview.toInt() == 1 -> {
@@ -94,7 +91,8 @@ class LandingRepository internal constructor(
                                                         componentDetailResponse.result?.storyResponse,
                                                         componentDetailResponse.result?.fieldExcludeDedupe?.toInt(),
                                                         componentDetailResponse.result?.fieldCount,
-                                                        componentDetailResponse.result?.fieldOffset
+                                                        componentDetailResponse.result?.fieldOffset,
+                                                        componentDetailResponse.result?.storyResponse?.mapNotNull { it.nid }
                                                     )
                                                     when {
                                                         deDupedList.isEmpty() -> {
@@ -110,7 +108,6 @@ class LandingRepository internal constructor(
                                                             )
                                                         }
                                                         else -> {
-                                                            landingPageStoryList.addAll(deDupedList)
                                                             emit(
                                                                 LandingPageNative(
                                                                     listOf(
@@ -183,7 +180,10 @@ class LandingRepository internal constructor(
         } ?: emit(LandingPageError)
     })
 
-    fun fetchComponentDetail(lazyLoadComponent: LazyLoadComponent): CFlow<LandingPageComponent> =
+    fun fetchComponentDetail(
+        lazyLoadComponent: LazyLoadComponent,
+        existingIdList: List<String>
+    ): CFlow<LandingPageComponent> =
         CFlow(flow {
             landingService.getComponentDetails(lazyLoadComponent.uuid, lazyLoadComponent.viewMode)
                 ?.let { componentDetailResponse ->
@@ -198,7 +198,8 @@ class LandingRepository internal constructor(
                                                     componentDetailResponse.result.storyResponse,
                                                     componentDetailResponse.result.fieldExcludeDedupe?.toInt(),
                                                     componentDetailResponse.result.fieldCount,
-                                                    componentDetailResponse.result.fieldOffset
+                                                    componentDetailResponse.result.fieldOffset,
+                                                    existingIdList
                                                 )
                                             )
                                         ),
@@ -730,10 +731,6 @@ class LandingRepository internal constructor(
         }
     }
 
-    fun clearLandingPageStoryList() {
-        landingPageStoryList.clear()
-    }
-
 
     private fun interpretTitle(labelDisplay: Boolean, title: String?): TitleData {
         return if (labelDisplay && !title.isNullOrBlank()) WithTitle(
@@ -927,7 +924,7 @@ class LandingRepository internal constructor(
                 storyResponse.mapIndexed { index, item ->
                     if (!item.nid.isNullOrBlank() && !item.uuid.isNullOrBlank() && !item.absoluteUrl.isNullOrBlank() && !item.title.isNullOrBlank()) {
                         when (index) {
-                            in (0..storyResponse.size) -> {
+                            0 -> {
                                 FeaturedStoryItem(
                                     item.nid,
                                     item.uuid,
@@ -949,7 +946,26 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-
+                            in (1..storyResponse.size) -> {
+                                StoryItemWithLeftImage(
+                                    item.nid,
+                                    item.uuid,
+                                    item.absoluteUrl,
+                                    item.title,
+                                    interpretStoryItemImage(
+                                        item.imageUrl,
+                                        item.imageByLineAndSource
+                                    ),
+                                    interpretStoryByLineData(item.author, item.mediaType),
+                                    interpretTimeStampData(item.releaseDate),
+                                    interpretEmphasisLogic(
+                                        item.mediaType,
+                                        item.video,
+                                        item.mediaCount
+                                    ),
+                                    false
+                                )
+                            }
                             else -> ComponentDetailStoryItemError
                         }
                     } else {
@@ -1107,7 +1123,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (1..3) -> {
+                            in (1..4) -> {
                                 StoryItemWithLeftImage(
                                     item.nid,
                                     item.uuid,
@@ -1127,7 +1143,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (4..storyResponse.size) -> {
+                            in (5..storyResponse.size) -> {
                                 StoryItemWithoutLeftImage(
                                     item.nid,
                                     item.uuid,
@@ -1245,7 +1261,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (1..4) -> {
+                            in (1..3) -> {
                                 StoryItemWithLeftImage(
                                     item.nid,
                                     item.uuid,
@@ -1265,7 +1281,7 @@ class LandingRepository internal constructor(
                                     false
                                 )
                             }
-                            in (5..storyResponse.size) -> {
+                            in (4..storyResponse.size) -> {
                                 StoryItemWithoutLeftImage(
                                     item.nid,
                                     item.uuid,
@@ -1830,30 +1846,29 @@ class LandingRepository internal constructor(
         storyResponse: List<StoryResponse>?,
         excludeDeDupe: Int?,
         fieldCount: Int?,
-        fieldOffset: Int?
+        fieldOffset: Int?,
+        existingIdList: List<String>?
     ): List<StoryResponse> {
         if (storyResponse.isNullOrEmpty()) {
             return emptyList()
         }
         val excludeDeDupeBool: Boolean = excludeDeDupe == 1
-        if (landingPageStoryList.isNotEmpty()) {
+        if (!existingIdList.isNullOrEmpty()) {
             val list = storyResponse.filter {
                 if (excludeDeDupeBool) {
                     true
                 } else {
-                    it.nid !in landingPageStoryList.map { item -> item.nid }
+                    it.nid !in existingIdList
                 }
             }
             return if (fieldCount != null && fieldCount > 0) {
                 if (list.isNotEmpty() && list.size >= fieldCount) {
                     val newList = list.take(fieldCount)
-                    landingPageStoryList.addAll(newList)
                     newList
                 } else {
                     list
                 }
             } else {
-                landingPageStoryList.addAll(list)
                 list
             }
         } else {
@@ -1861,13 +1876,11 @@ class LandingRepository internal constructor(
             return if (fieldCount != null && fieldCount > 0) {
                 if (newStoryResponse.isNotEmpty() && newStoryResponse.size >= fieldCount) {
                     val newList = newStoryResponse.take(fieldCount)
-                    landingPageStoryList.addAll(newList)
                     newList
                 } else {
                     newStoryResponse
                 }
             } else {
-                landingPageStoryList.addAll(newStoryResponse)
                 newStoryResponse
             }
         }
