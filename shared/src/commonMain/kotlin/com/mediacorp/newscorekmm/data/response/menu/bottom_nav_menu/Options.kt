@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Options(
     @SerialName("attributes")
-    val attributes: Attributes,
+    val attributes: Attributes?=null,
     @SerialName("modal")
-    val modal: List<String>
+    val modal: List<String>?=null
 )

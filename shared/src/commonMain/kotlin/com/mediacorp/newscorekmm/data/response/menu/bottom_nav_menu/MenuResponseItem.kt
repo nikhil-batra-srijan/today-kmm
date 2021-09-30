@@ -7,21 +7,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MenuResponseItem(
     @SerialName("absolute_url")
-    val absoluteUrl: String?,
+    val absoluteUrl: String?=null,
     @SerialName("alias")
-    val alias: String,
+    val alias: String?=null,
     @SerialName("enabled")
     val enabled: Boolean,
     @SerialName("field_id")
-    val fieldId: String?,
+    val fieldId: String?=null,
     @SerialName("field_type")
-    val fieldType: String?,
+    val fieldType: String?=null,
     @SerialName("options")
-    val options: Options,
+    val options: Options? = null,
     @SerialName("title")
-    val title: String?,
+    val title: String? = null,
     @SerialName("uri")
-    val uri: String?,
+    val uri: String? = null,
     @SerialName("weight")
-    val weight: String
+    val weight: String? = null
 )
