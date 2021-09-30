@@ -27,9 +27,9 @@ sealed class ViewModeType {
 
 fun detectViewModeTypeFromViewMode(viewMode: String): ViewModeType {
     return when (viewMode) {
+
+        //today
         "middle_9s_5p" -> ViewModeType.middle9s5p
-        "top_stories_primary" -> ViewModeType.middle9s5p
-        "top_stories_secondary" -> ViewModeType.middle9s5p
         "full" -> ViewModeType.full
         "left_7s_5p" -> ViewModeType.left7s5p
         "minute_full_width" -> ViewModeType.minuteFullWidth
@@ -48,6 +48,17 @@ fun detectViewModeTypeFromViewMode(viewMode: String): ViewModeType {
         "featured_image_middle_8s_4p" -> ViewModeType.featuredImageMiddle8s4p
         "infinite_scroll_listing_tdy" -> ViewModeType.infiniteScrollListingTdy
         "a_left_5s_5p_ads" -> ViewModeType.aLeft5s5pAds
+
+        //berita
+        "top_stories_primary" -> ViewModeType.aLeft5s5p
+        "top_stories_secondary" -> ViewModeType.aLeft5s5p
+        "a_left_7s_4p_ads" -> ViewModeType.aLeft5s5p
+        "c_left_5s_5p_ads" -> ViewModeType.aLeft5s5p
+        "listing_3s_3p" -> ViewModeType.listing4s4p
+        "b_middle_7s_4p_ads" -> ViewModeType.aLeft5s5p
+
+
+        //default
         else -> ViewModeType.defaultViewMode
     }
 }
