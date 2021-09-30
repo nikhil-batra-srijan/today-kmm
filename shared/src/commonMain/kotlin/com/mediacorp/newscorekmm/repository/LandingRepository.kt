@@ -274,11 +274,12 @@ class LandingRepository internal constructor(
 
         val compResult = componentResponse.result
         val detectedViewMode = detectViewModeTypeFromViewMode(viewMode)
+        val  componentType =  detectComponentTypeFromType(componentResponse.result.type)
 
         println("\nLandingRepository Component viewMode =${viewMode} type =${compResult.type}")
 
         return when {
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.middle9s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -306,7 +307,7 @@ class LandingRepository internal constructor(
 
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.left7s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -330,7 +331,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.listing4s4p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -354,7 +355,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.largeTiles2s2p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -378,7 +379,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.aLeft5s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -402,7 +403,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.aMiddle8s6p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -426,7 +427,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.carouselWithoutNumbersFullWidth -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -451,7 +452,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.featuredVideoLeft5s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -475,7 +476,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.carouselJournalistsFull -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -499,7 +500,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.minuteFullWidth -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -524,7 +525,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.featuredImageLeft9s6p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -548,7 +549,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.featuredImageLeft8s5p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -572,7 +573,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.aLeft5s5pAds -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -596,7 +597,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.featuredImageMiddle8s4p -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -620,7 +621,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.infiniteScrollListingTdy -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -640,7 +641,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.dynamicListing
+            componentType == ComponentType.dynamicListing
                     && detectedViewMode == ViewModeType.defaultViewMode -> {
                 interpretMandatoryStoryList(compResult.storyResponse)
                 { storyResponse ->
@@ -664,7 +665,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.spotlight
+            componentType == ComponentType.spotlight
                     && detectedViewMode == ViewModeType.full -> {
                 if (!compResult.imageUrl.isNullOrBlank()) {
                     SpotLightComponent(
@@ -682,7 +683,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.subscription
+            componentType == ComponentType.subscription
                     && detectedViewMode == ViewModeType.defaultViewMode -> {
                 if (!compResult.title.isNullOrBlank()
                     && !compResult.body.isNullOrBlank()
@@ -703,7 +704,7 @@ class LandingRepository internal constructor(
                 }
             }
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.interactive
+            componentType == ComponentType.interactive
                     && detectedViewMode == ViewModeType.full -> {
                 if (!compResult.htmlString.isNullOrBlank() && !compResult.title.isNullOrBlank()) {
                     InteractiveComponent(
@@ -724,13 +725,13 @@ class LandingRepository internal constructor(
 
             //TODO write implementation for CIA widgets
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
+            componentType == ComponentType.ciaWidget
                     && detectedViewMode == ViewModeType.numberedCarousel -> ComponentError
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
+            componentType == ComponentType.ciaWidget
                     && detectedViewMode == ViewModeType.carousel -> ComponentError
 
-            detectComponentTypeFromType(componentResponse.result.type) == ComponentType.ciaWidget
+            componentType == ComponentType.ciaWidget
                     && detectedViewMode == ViewModeType.cLeft5s5p -> ComponentError
             else -> ComponentError
         }
