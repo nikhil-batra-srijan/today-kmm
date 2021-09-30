@@ -16,7 +16,7 @@ class MenuRepository internal constructor(val menuService: MenuService) {
             val firstId = bottomMenu.firstOrNull()?.fieldId
 
             val bottomMenus: List<MenuItem> = interpretMandatoryMenuList(bottomMenu) { pureList ->
-                interpretMenuList(pureList)
+                deduplicateMenu(interpretMenuList(pureList))
             }
 
             val topMenus: List<MenuItem> = menuService.getTopMenu()?.let { topMenu ->
@@ -27,7 +27,7 @@ class MenuRepository internal constructor(val menuService: MenuService) {
                         pureList.toMutableList().apply {
                             this[0] = this[0].copy(fieldId = firstId)
                         }
-                    interpretMenuList(updatedList)
+                    deduplicateMenu(interpretMenuList(updatedList))
                 }
             } ?: emptyList()
 
@@ -36,9 +36,19 @@ class MenuRepository internal constructor(val menuService: MenuService) {
             } else {
                 emit(MenuData.Nothing)
             }
-        }?:emit(MenuData.Nothing)
+        } ?: emit(MenuData.Nothing)
     }
     )
+
+    private fun deduplicateMenu(menu: List<MenuItem>): List<MenuItem> {
+        return menu.distinctBy {
+            when (it) {
+                is MenuItem.WithLandingPage -> it.id
+                is MenuItem.WithAbsoluteUrl -> it.title
+                MenuItem.None -> it
+            }
+        }
+    }
 
     private fun interpretMenuList(menuList: List<MenuResponseItem>?): List<MenuItem> {
         return if (menuList.isNullOrEmpty()) emptyList()
