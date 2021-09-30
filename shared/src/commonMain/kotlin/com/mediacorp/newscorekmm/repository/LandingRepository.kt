@@ -22,9 +22,7 @@ import com.mediacorp.newscorekmm.data.domain.dto.landing.component.dl_minute_ful
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.dl_seven_stoies_five_pics.SevenStoriesFivePicsComponent
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.full_interactive.*
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.full_spotlight.*
-import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollComponentData
-import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollData
-import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollError
+import com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll.InfiniteScrollListComponent
 import com.mediacorp.newscorekmm.data.domain.dto.landing.landing_page.*
 import com.mediacorp.newscorekmm.data.request.CiaWidgetRequest
 import com.mediacorp.newscorekmm.data.request.WidgetContext
@@ -101,7 +99,7 @@ class LandingRepository internal constructor(
                                                                 LandingPageNative(
                                                                     emptyList(),
                                                                     landingPageData.map {
-                                                                        LazyLoadComponent(
+                                                                        LazyLoadComponent.LazyComponent(
                                                                             it.uuid,
                                                                             it.viewMode,
                                                                             it.labelView
@@ -122,7 +120,7 @@ class LandingRepository internal constructor(
                                                                             landingPageData[0].labelView
                                                                         )
                                                                     ), landingPageData.map {
-                                                                        LazyLoadComponent(
+                                                                        LazyLoadComponent.LazyComponent(
                                                                             it.uuid,
                                                                             it.viewMode,
                                                                             it.labelView
@@ -143,7 +141,7 @@ class LandingRepository internal constructor(
                                                                     landingPageData[0].labelView
                                                                 )
                                                             ), landingPageData.map {
-                                                                LazyLoadComponent(
+                                                                LazyLoadComponent.LazyComponent(
                                                                     it.uuid,
                                                                     it.viewMode,
                                                                     it.labelView
@@ -159,7 +157,7 @@ class LandingRepository internal constructor(
                                             LandingPageNative(
                                                 emptyList(),
                                                 landingPageData.map {
-                                                    LazyLoadComponent(
+                                                    LazyLoadComponent.LazyComponent(
                                                         it.uuid,
                                                         it.viewMode,
                                                         it.labelView
@@ -228,13 +226,15 @@ class LandingRepository internal constructor(
         })
 
     fun fetchInfiniteScrollComponent(
-        uuid: String,
-        viewMode: String,
-        page: Int
-    ): CFlow<InfiniteScrollData> = CFlow(flow {
-        infiniteScrollService.getInfiniteScrollList(uuid, viewMode, page)?.let {
+        lazyLoadComponent: LazyLoadComponent.InfiniteLazyComponent
+    ): CFlow<LandingPageComponent> = CFlow(flow {
+        infiniteScrollService.getInfiniteScrollList(
+            lazyLoadComponent.uuid,
+            lazyLoadComponent.viewMode,
+            lazyLoadComponent.pageCount
+        )?.let {
             if (it.result.isNullOrEmpty()) {
-                emit(InfiniteScrollError)
+                emit(ComponentError)
             } else {
                 interpretStoryList(
                     it.result,
@@ -242,13 +242,12 @@ class LandingRepository internal constructor(
                 ).filter { item -> item !is ComponentDetailStoryItemError }
                     .let { infiniteStoryList ->
                         if (infiniteStoryList.isEmpty()) {
-                            emit(InfiniteScrollError)
+                            emit(ComponentError)
                         } else {
                             emit(
-                                InfiniteScrollComponentData(
-                                    uuid,
-                                    viewMode,
-                                    page.plus(1),
+                                InfiniteScrollListComponent(
+                                    (((lazyLoadComponent.pageCount * 99) + 99).toString()
+                                            + (lazyLoadComponent.uuid)),
                                     infiniteStoryList
                                 )
                             )
@@ -259,7 +258,7 @@ class LandingRepository internal constructor(
             }
 
         }
-            ?: emit(InfiniteScrollError)
+            ?: emit(ComponentError)
     })
 
     @Suppress("UNCHECKED_CAST")
@@ -274,7 +273,7 @@ class LandingRepository internal constructor(
 
         val compResult = componentResponse.result
         val detectedViewMode = detectViewModeTypeFromViewMode(viewMode)
-        val  componentType =  detectComponentTypeFromType(componentResponse.result.type)
+        val componentType = detectComponentTypeFromType(componentResponse.result.type)
 
         println("\nLandingRepository Component viewMode =${viewMode} type =${compResult.type}")
 
@@ -723,11 +722,9 @@ class LandingRepository internal constructor(
                 }
             }
 
-            //TODO write implementation for CIA widgets
-
             componentType == ComponentType.ciaWidget -> {
                 fetchCiaWidget(
-                    lazyLoadComponent = LazyLoadComponent(
+                    lazyLoadComponent = LazyLoadComponent.LazyComponent(
                         compResult.uuid,
                         viewMode,
                         labelDisplay

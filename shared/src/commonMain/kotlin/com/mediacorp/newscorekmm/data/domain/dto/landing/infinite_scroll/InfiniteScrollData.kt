@@ -1,14 +1,11 @@
 package com.mediacorp.newscorekmm.data.domain.dto.landing.infinite_scroll
 
+import com.mediacorp.newscorekmm.data.domain.dto.landing.component.LandingPageComponent
 import com.mediacorp.newscorekmm.data.domain.dto.landing.component.common.ComponentDetailStoryItem
 
-interface InfiniteScrollData
 
-data class InfiniteScrollComponentData(
+data class InfiniteScrollListComponent(
     val uuid: String,
-    val viewMode: String,
-    val nextPage: Int,
-    val itemList: List<ComponentDetailStoryItem>
-) : InfiniteScrollData
-
-object InfiniteScrollError : InfiniteScrollData
+    val storyList: List<ComponentDetailStoryItem>,
+    val isDarkMode: Boolean = false
+) : LandingPageComponent
