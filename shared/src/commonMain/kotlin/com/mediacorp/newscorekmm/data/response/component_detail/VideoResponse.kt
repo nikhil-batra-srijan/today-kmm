@@ -25,7 +25,7 @@ data class VideoResponse(
     @SerialName("player")
     val player: String,
     @SerialName("show_background_image")
-    val showBackgroundImage: Boolean,
+    val showBackgroundImage: Boolean = false,
     @SerialName("show_countdown")
     val showCountdown: Boolean,
     @SerialName("start_time")
