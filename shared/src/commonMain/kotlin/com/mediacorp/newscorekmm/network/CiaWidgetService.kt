@@ -6,7 +6,7 @@ import com.mediacorp.newscorekmm.data.request.WidgetContext
 import com.mediacorp.newscorekmm.data.response.component_detail.CiaWidgetResponse
 import io.ktor.client.request.*
 
-class CiaWidgetService(private val token: String,private val baseUrl: String="") {
+class CiaWidgetService(private val token: String,private val baseUrl: String="https://recommend-zoom.mediacorp.sg") {
     suspend fun getCiaComponent(
         uuid: String,
         viewMode: String,

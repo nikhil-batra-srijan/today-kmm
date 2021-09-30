@@ -5,7 +5,6 @@ import com.mediacorp.newscorekmm.data.domain.dto.landing.component.LandingPageCo
 data class CiaComponentCarousel(
     val uuid: String,
     val title: TitleData,
-    val subTitle:SubTitleData,
     val ciaStoryList: List<CiaStoryItem>,
     val isDarkMode: Boolean = false
 ) : LandingPageComponent
@@ -24,18 +23,16 @@ data class CiaComponentFiveStoriesFiveFivePics(
     val isDarkMode: Boolean = false
 ) : LandingPageComponent
 
-
-
-sealed class CiaStoryItem {
+sealed class CiaStoryItem{
     data class WithCiaStoryItem(
         val title: String,
         val id: String,
-        val contentId: String?,
-        val url: String?,
+        val contentId: String,
+        val url: String,
         val imageUrl: ImageData,
-        val clickTracker: String?,
+        val clickTracker: String,
         val date: TimestampData
     ) : CiaStoryItem()
 
-    object None : CiaStoryItem()
+    object None: CiaStoryItem ()
 }

@@ -172,15 +172,15 @@ class LandingRepository internal constructor(
                                 }
                             }
 
-                            }
                         }
-
                     }
-                }
 
-            } ?: emit(LandingPageError)
-        })
-    }
+                }
+            }
+
+        } ?: emit(LandingPageError)
+    })
+
 
     fun fetchComponentDetail(
         lazyLoadComponent: LazyLoadComponent,
@@ -788,7 +788,6 @@ class LandingRepository internal constructor(
                                     lazyLoadComponent.labelDisplay,
                                     data.layoutConfig.title
                                 ),
-                                subTitle = WithoutSubTitle,
                                 ciaStoryList = pureCiaList
                             )
                         }
@@ -812,7 +811,8 @@ class LandingRepository internal constructor(
     }
 
     private fun interpretCIAStoryItem(item: CiaWidgetResponse.WidgetData.Item): CiaStoryItem {
-        return if (!item.title.isNullOrBlank() && !item.id.isNullOrBlank()
+        return if (!item.title.isNullOrBlank() && !item.id.isNullOrBlank() && !item.url.isNullOrBlank()
+            && !item.clickTracker.isNullOrBlank() && !item.contentId.isNullOrBlank()
         ) {
             CiaStoryItem.WithCiaStoryItem(
                 title = item.title,
@@ -1993,6 +1993,5 @@ class LandingRepository internal constructor(
         const val GALLERY_MEDIA_TYPE = "gallery"
     }
 }
-
 
 
