@@ -270,7 +270,13 @@ class LandingRepository internal constructor(
             }
 
         }
-            ?: emit(ComponentError)
+            ?: emit(
+                InfiniteScrollListComponent(
+                    (((lazyLoadComponent.pageCount * 99) + 99).toString()
+                            + (lazyLoadComponent.uuid)),
+                    emptyList()
+                )
+            )
     })
 
     @Suppress("UNCHECKED_CAST")
