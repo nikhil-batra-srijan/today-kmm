@@ -8,8 +8,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 
 class CiaWidgetService(
-    private val token: String,
-    private val baseUrl: String = "https://recommend-zoom.mediacorp.sg"
+    private val token: String
 ) {
     suspend fun getCiaComponent(
         uuid: String,
@@ -22,7 +21,7 @@ class CiaWidgetService(
         url: String
     ): CiaWidgetResponse? {
         return try {
-            CommonApiClient.httpClient.post("$baseUrl$CIA_WIDGET_API") {
+            CommonApiClient.httpClient.post("$CIA_WIDGET_API") {
                 parameter("token", token)
                 contentType(ContentType.Application.Json)
                 body = CiaWidgetRequest(
