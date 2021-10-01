@@ -8,5 +8,5 @@ import com.mediacorp.newscorekmm.repository.LandingRepository
 fun LandingRepository.Companion.init(baseUrl: String, token: String) = LandingRepository(
     LandingService(baseUrl),
     InfiniteScrollService(baseUrl),
-    CiaWidgetService(baseUrl = baseUrl, token = token)
+    CiaWidgetService(token = token)
 )
