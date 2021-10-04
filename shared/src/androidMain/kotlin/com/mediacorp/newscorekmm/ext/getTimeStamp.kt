@@ -25,7 +25,10 @@ actual fun String.getTimeStamp(): TimestampData {
                     hours < 1 -> {
                         WithLessThanOneHour
                     }
-                    hours in 1..23 -> {
+                    hours == 1L -> {
+                        WithHourAgo
+                    }
+                    hours in 2..23 -> {
                         WithHoursAgo(hours.toString())
                     }
                     hours in 24..47 -> {
