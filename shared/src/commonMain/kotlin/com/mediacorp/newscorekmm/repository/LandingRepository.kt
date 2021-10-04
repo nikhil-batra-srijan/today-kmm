@@ -234,7 +234,13 @@ class LandingRepository internal constructor(
             lazyLoadComponent.pageCount
         )?.let {
             if (it.result.isNullOrEmpty()) {
-                emit(ComponentError)
+                emit(
+                    InfiniteScrollListComponent(
+                        (((lazyLoadComponent.pageCount * 99) + 99).toString()
+                                + (lazyLoadComponent.uuid)),
+                        emptyList()
+                    )
+                )
             } else {
                 interpretStoryList(
                     it.result,
@@ -242,7 +248,13 @@ class LandingRepository internal constructor(
                 ).filter { item -> item !is ComponentDetailStoryItemError }
                     .let { infiniteStoryList ->
                         if (infiniteStoryList.isEmpty()) {
-                            emit(ComponentError)
+                            emit(
+                                InfiniteScrollListComponent(
+                                    (((lazyLoadComponent.pageCount * 99) + 99).toString()
+                                            + (lazyLoadComponent.uuid)),
+                                    emptyList()
+                                )
+                            )
                         } else {
                             emit(
                                 InfiniteScrollListComponent(
@@ -258,7 +270,13 @@ class LandingRepository internal constructor(
             }
 
         }
-            ?: emit(ComponentError)
+            ?: emit(
+                InfiniteScrollListComponent(
+                    (((lazyLoadComponent.pageCount * 99) + 99).toString()
+                            + (lazyLoadComponent.uuid)),
+                    emptyList()
+                )
+            )
     })
 
     @Suppress("UNCHECKED_CAST")
