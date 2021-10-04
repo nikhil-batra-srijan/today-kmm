@@ -744,6 +744,10 @@ class LandingRepository internal constructor(
                 if (!compResult.mobileWidgetId.isNullOrBlank()) {
                     fetchCiaWidget(
                         compResult.title,
+                        compResult.viewMoreTitle,
+                        compResult.viewMoreUrlFieldId,
+                        compResult.viewMoreUrlFieldType,
+                        compResult.viewMoreUrl,
                         lazyLoadComponent = LazyLoadComponent.LazyComponent(
                             compResult.uuid,
                             viewMode,
@@ -773,6 +777,10 @@ class LandingRepository internal constructor(
 
     private suspend fun fetchCiaWidget(
         ciaTtitle: String?,
+        ciaViewMoreTitle: String?,
+        ciaViewMoreFieldId: String?,
+        ciaViewMoreFieldType: String?,
+        ciaViewMoreUrl: String?,
         lazyLoadComponent: LazyLoadComponent,
         ciaWidgetRequest: CiaWidgetRequest,
         viewMode: ViewModeType
@@ -802,10 +810,15 @@ class LandingRepository internal constructor(
                                     lazyLoadComponent.labelDisplay,
                                     ciaTtitle
                                 ),
-                                ciaStoryList = pureCiaList
+                                ciaStoryList = pureCiaList,
+                                ctaData = interpretCta(
+                                    ciaViewMoreTitle,
+                                    ciaViewMoreFieldId,
+                                    ciaViewMoreFieldType,
+                                    ciaViewMoreUrl
+                                )
                             )
                         }
-
                         ViewModeType.carousel -> {
                             CiaComponentCarousel(
                                 uuid = lazyLoadComponent.uuid,
@@ -814,10 +827,15 @@ class LandingRepository internal constructor(
                                     lazyLoadComponent.labelDisplay,
                                     ciaTtitle
                                 ),
-                                ciaStoryList = pureCiaList
+                                ciaStoryList = pureCiaList,
+                                ctaData = interpretCta(
+                                    ciaViewMoreTitle,
+                                    ciaViewMoreFieldId,
+                                    ciaViewMoreFieldType,
+                                    ciaViewMoreUrl
+                                )
                             )
                         }
-
                         ViewModeType.cLeft5s5p -> {
                             CiaComponentFiveStoriesFiveFivePics(
                                 uuid = lazyLoadComponent.uuid,
@@ -826,7 +844,13 @@ class LandingRepository internal constructor(
                                     lazyLoadComponent.labelDisplay,
                                     ciaTtitle
                                 ),
-                                ciaStoryList = pureCiaList
+                                ciaStoryList = pureCiaList,
+                                ctaData = interpretCta(
+                                    ciaViewMoreTitle,
+                                    ciaViewMoreFieldId,
+                                    ciaViewMoreFieldType,
+                                    ciaViewMoreUrl
+                                )
                             )
                         }
                         else -> ComponentError
