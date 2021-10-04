@@ -6,21 +6,24 @@ data class CiaComponentCarousel(
     val uuid: String,
     val title: TitleData,
     val ciaStoryList: List<CiaStoryItem>,
-    val isDarkMode: Boolean = false
+    val isDarkMode: Boolean = false,
+    val ctaData: CtaData
 ) : LandingPageComponent
 
 data class CiaComponentNumberedCarousel(
     val uuid: String,
     val title: TitleData,
     val ciaStoryList: List<CiaStoryItem>,
-    val isDarkMode: Boolean = false
+    val isDarkMode: Boolean = false,
+    val ctaData: CtaData
 ) : LandingPageComponent
 
 data class CiaComponentFiveStoriesFiveFivePics(
     val uuid: String,
     val title: TitleData,
     val ciaStoryList: List<CiaStoryItem>,
-    val isDarkMode: Boolean = false
+    val isDarkMode: Boolean = false,
+    val ctaData: CtaData
 ) : LandingPageComponent
 
 sealed class CiaStoryItem{
