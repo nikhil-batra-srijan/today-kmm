@@ -91,7 +91,7 @@ class LandingRepository internal constructor(
                                                         componentDetailResponse.result?.fieldExcludeDedupe?.toInt(),
                                                         componentDetailResponse.result?.fieldCount,
                                                         componentDetailResponse.result?.fieldOffset,
-                                                        componentDetailResponse.result?.storyResponse?.mapNotNull { it.nid }
+                                                        emptyList()
                                                     )
                                                     emit(
                                                         when {
@@ -1863,12 +1863,9 @@ class LandingRepository internal constructor(
                     }
                 }
             }
-            //CIA //TODO Add Implementation for CIA Widgets
-            ViewModeType.numberedCarousel -> emptyList()
-            ViewModeType.cLeft5s5p -> emptyList()
-            ViewModeType.carousel -> emptyList()
             //Not for dynamic Listing
             ViewModeType.full -> emptyList()
+            else -> emptyList()
 
         }
     }
