@@ -1838,12 +1838,9 @@ class LandingRepository internal constructor(
                     }
                 }
             }
-            //CIA //TODO Add Implementation for CIA Widgets
-            ViewModeType.numberedCarousel -> emptyList()
-            ViewModeType.cLeft5s5p -> emptyList()
-            ViewModeType.carousel -> emptyList()
             //Not for dynamic Listing
             ViewModeType.full -> emptyList()
+            else -> emptyList()
 
         }
     }
