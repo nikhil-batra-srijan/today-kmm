@@ -91,7 +91,7 @@ class LandingRepository internal constructor(
                                                         componentDetailResponse.result?.fieldExcludeDedupe?.toInt(),
                                                         componentDetailResponse.result?.fieldCount,
                                                         componentDetailResponse.result?.fieldOffset,
-                                                        componentDetailResponse.result?.storyResponse?.mapNotNull { it.nid }
+                                                        emptyList()
                                                     )
                                                     emit(
                                                         when {
