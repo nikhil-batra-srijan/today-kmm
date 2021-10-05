@@ -28,10 +28,10 @@ class CiaWidgetService(
                     id = id,
                     context = WidgetContext(
                         meid = meid,
-                        site = contentId,
+                        site = site,
                         cxenseId = censexId,
-                        url = site,
-                        contentId = url
+                        url = url,
+                        contentId = contentId
                     )
                 )
             }
