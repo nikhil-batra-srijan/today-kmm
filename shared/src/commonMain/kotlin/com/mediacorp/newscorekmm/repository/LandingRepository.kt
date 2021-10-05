@@ -102,12 +102,19 @@ class LandingRepository internal constructor(
                                                                         LazyLoadComponent.LazyComponent(
                                                                             it.uuid,
                                                                             it.viewMode,
-                                                                            it.labelView
+                                                                            it.labelView,
+                                                                            interpretComponentLabel(
+                                                                                it.label
+                                                                            )
                                                                         )
                                                                     }.drop(1)
                                                                 )
                                                             }
                                                             else -> {
+                                                                val componentLabel =
+                                                                    interpretComponentLabel(
+                                                                        landingPageData[0].label
+                                                                    )
                                                                 LandingPageNative(
                                                                     listOf(
                                                                         getLandingPageComponent(
@@ -117,13 +124,15 @@ class LandingRepository internal constructor(
                                                                                 )
                                                                             ),
                                                                             landingPageData[0].viewMode,
-                                                                            landingPageData[0].labelView
+                                                                            landingPageData[0].labelView,
+                                                                            componentLabel
                                                                         )
                                                                     ), landingPageData.map {
                                                                         LazyLoadComponent.LazyComponent(
                                                                             it.uuid,
                                                                             it.viewMode,
-                                                                            it.labelView
+                                                                            it.labelView,
+                                                                            interpretComponentLabel(it.label)
                                                                         )
                                                                     }.drop(1)
                                                                 )
@@ -132,19 +141,24 @@ class LandingRepository internal constructor(
                                                     )
                                                 }
                                                 else -> {
+                                                    val componentLabel = interpretComponentLabel(
+                                                        landingPageData[0].label
+                                                    )
                                                     emit(
                                                         LandingPageNative(
                                                             listOf(
                                                                 getLandingPageComponent(
                                                                     componentDetailResponse,
                                                                     landingPageData[0].viewMode,
-                                                                    landingPageData[0].labelView
+                                                                    landingPageData[0].labelView,
+                                                                    componentLabel
                                                                 )
                                                             ), landingPageData.map {
                                                                 LazyLoadComponent.LazyComponent(
                                                                     it.uuid,
                                                                     it.viewMode,
-                                                                    it.labelView
+                                                                    it.labelView,
+                                                                    interpretComponentLabel(it.label)
                                                                 )
                                                             }.drop(1)
                                                         )
@@ -160,7 +174,10 @@ class LandingRepository internal constructor(
                                                     LazyLoadComponent.LazyComponent(
                                                         it.uuid,
                                                         it.viewMode,
-                                                        it.labelView
+                                                        it.labelView,
+                                                        interpretComponentLabel(
+                                                            it.label
+                                                        )
                                                     )
                                                 }.drop(1)
                                             )
@@ -202,7 +219,8 @@ class LandingRepository internal constructor(
                                             )
                                         ),
                                         lazyLoadComponent.viewMode,
-                                        lazyLoadComponent.labelDisplay
+                                        lazyLoadComponent.labelDisplay,
+                                        lazyLoadComponent.label
                                     )
                                 )
                             }
@@ -211,7 +229,8 @@ class LandingRepository internal constructor(
                                     getLandingPageComponent(
                                         componentDetailResponse,
                                         lazyLoadComponent.viewMode,
-                                        lazyLoadComponent.labelDisplay
+                                        lazyLoadComponent.labelDisplay,
+                                        lazyLoadComponent.label
                                     )
                                 )
                             }
@@ -283,7 +302,8 @@ class LandingRepository internal constructor(
     private suspend fun getLandingPageComponent(
         componentResponse: ComponentDetailResponse,
         viewMode: String,
-        labelDisplay: Boolean
+        labelDisplay: Boolean,
+        componentLabel: ComponentLabel
     ): LandingPageComponent {
         if (componentResponse.result == null) {
             return ComponentError
@@ -307,7 +327,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         MiddleNineStoriesFivePicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -335,7 +355,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         SevenStoriesFivePicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -359,7 +379,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         ListingFourStoriesFourPicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -383,7 +403,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         LargeTilesTwoStoriesTwoPicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -407,7 +427,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         FiveStoriesFivePicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -431,7 +451,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         MiddleEightStoriesSixPicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -455,7 +475,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         CarouselWithoutNumbersFullWidthComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretSubTitle(compResult.fieldSubDescription),
                             interpretCta(
                                 compResult.viewMoreTitle,
@@ -480,7 +500,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         FeaturedVideoLeftFiveStoriesFivePicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -504,7 +524,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         CarouselJournalistsFullComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -528,7 +548,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         MinuteFullWidthComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretSubTitle(compResult.fieldSubDescription),
                             interpretCta(
                                 compResult.viewMoreTitle,
@@ -553,7 +573,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         FeaturedImageNineStoriesFivePicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -577,7 +597,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         FeaturedImageLeftEightStoriesFivePicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -601,7 +621,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         LeftFiveStoriesFivePicsAdsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -625,7 +645,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         FeaturedImageMiddleEightStoriesFivePicsComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -650,7 +670,7 @@ class LandingRepository internal constructor(
                         InfiniteScrollListingTdyComponent(
                             compResult.uuid,
                             viewMode,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             pureStoryList
 
                         )
@@ -669,7 +689,7 @@ class LandingRepository internal constructor(
                     interpretMandatoryStoryList(storyResponse = interpretedList) { pureStoryList ->
                         DefaultListingComponent(
                             compResult.uuid,
-                            interpretTitle(labelDisplay, compResult.title),
+                            interpretTitle(labelDisplay, componentLabel),
                             interpretCta(
                                 compResult.viewMoreTitle,
                                 compResult.viewMoreUrlFieldId,
@@ -751,7 +771,8 @@ class LandingRepository internal constructor(
                         lazyLoadComponent = LazyLoadComponent.LazyComponent(
                             compResult.uuid,
                             viewMode,
-                            labelDisplay
+                            labelDisplay,
+                            componentLabel
                         ),
                         ciaWidgetRequest = CiaWidgetRequest(
                             id = compResult.mobileWidgetId,
@@ -808,7 +829,7 @@ class LandingRepository internal constructor(
                                 isDarkMode = lazyLoadComponent.labelDisplay,
                                 title = interpretTitle(
                                     lazyLoadComponent.labelDisplay,
-                                    ciaTtitle
+                                    lazyLoadComponent.label
                                 ),
                                 ciaStoryList = pureCiaList,
                                 ctaData = interpretCta(
@@ -825,7 +846,7 @@ class LandingRepository internal constructor(
                                 isDarkMode = lazyLoadComponent.labelDisplay,
                                 title = interpretTitle(
                                     lazyLoadComponent.labelDisplay,
-                                    ciaTtitle
+                                    lazyLoadComponent.label
                                 ),
                                 ciaStoryList = pureCiaList,
                                 ctaData = interpretCta(
@@ -842,7 +863,7 @@ class LandingRepository internal constructor(
                                 isDarkMode = lazyLoadComponent.labelDisplay,
                                 title = interpretTitle(
                                     lazyLoadComponent.labelDisplay,
-                                    ciaTtitle
+                                    lazyLoadComponent.label
                                 ),
                                 ciaStoryList = pureCiaList,
                                 ctaData = interpretCta(
@@ -858,6 +879,10 @@ class LandingRepository internal constructor(
                 }
             }
         } ?: ComponentError
+    }
+
+    private fun interpretComponentLabel(label: String?): ComponentLabel {
+        return if (label.isNullOrBlank()) ComponentLabel.None else ComponentLabel.WithLabel(label = label)
     }
 
     private fun interpretCIAStoryItem(item: CiaWidgetResponse.WidgetData.Item): CiaStoryItem {
@@ -879,9 +904,9 @@ class LandingRepository internal constructor(
     }
 
 
-    private fun interpretTitle(labelDisplay: Boolean, title: String?): TitleData {
-        return if (labelDisplay && !title.isNullOrBlank()) WithTitle(
-            title
+    private fun interpretTitle(labelDisplay: Boolean, componentLabel: ComponentLabel): TitleData {
+        return if (labelDisplay && componentLabel is ComponentLabel.WithLabel) WithTitle(
+            componentLabel.label
         ) else WithoutTitle
     }
 
