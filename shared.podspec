@@ -1,15 +1,15 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'shared'
     spec.version                  = '1.0'
-    spec.homepage                 = 'Link to the Shared Module homepage'
+    spec.homepage                 = 'https://github.com/nikhil-batra-srijan/today-kmm/tree/0.0.1'
     # spec.source                   = { :git => "https://github.com/mediacorp/news-core-kmm.git", :tag => "develop" }
     spec.authors                  = ''
-    spec.license                  = ''
+    spec.license                  = { :type => 'BSD' }
     spec.summary                  = 'Some description for the Shared Module'
     spec.source                   = { :http => 'https://github.com/nikhil-batra-srijan/today-kmm/releases/download/0.0.1/Fameworks.zip' }
-    spec.vendored_frameworks      = 'shared.framework'
-    spec.libraries                = "c++"
-    spec.module_name              = "#{spec.name}_umbrella"
+    spec.vendored_frameworks      = 'Fameworks/shared.framework'
+    # spec.libraries                = "c++"
+    # spec.module_name              = "#{spec.name}_umbrella"
 
     spec.ios.deployment_target = '13.0'
 
